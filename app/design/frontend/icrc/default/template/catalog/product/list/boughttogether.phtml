@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Magento
@@ -24,34 +25,79 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+<?php
+$totalPerPage = ($this->show_total) ? $this->show_total : 12;
+$storeId = Mage::app()->getStore()->getId();
+$_productCollection = Mage::getResourceModel('reports/product_collection')
+    ->addAttributeToSelect('*')
+    ->setStoreId($storeId)
+    ->addStoreFilter($storeId)
+    ->addViewsCount()
+    ->setPageSize($totalPerPage);
+$_category_detail=Mage::registry('current_category');
+?>
 <div class="bottom-boughttogether product-bottom-list">
     <div class="icrc-wrapper">
         <div class="inner"><?php echo $this->__('Frequently bought associated products') ?></div>
     </div>
-  <div class="bottom-boughttogether-content" id="bottom-boughttogether-content">
-    <div class="carousel-control previous_button">&nbsp;</div>
-    <div class="bottom-boughttogether-content-container">
-      <ul class="boughttogether">
-<?php $_items = $this->getItems() ?>
-<?php foreach ($_items as $_item): ?>
-        <li class="item">
-          <div class="image">
-            <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $_item->getThumbnailUrl(96, 96) ?>"
-            alt="<?php echo $_item->getName() ?>" title="<?php echo $_item->getName() ?>" width="96" height="96" /></a>
-          </div>
-          <div class="title"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo Mage::helper('core/string')->truncate($_item->getName(), 150); ?></a></div>
-        </li>		
-<?php endforeach?>
-      </ul>
+    <div class="bottom-boughttogether-content" id="bottom-boughttogether-content">
+        <div class="carousel-control previous_button">&nbsp;</div>
+        <div class="bottom-boughttogether-content-container">
+            <ul class="boughttogether">
+                <?php
+                if($_category_detail->getParentCategory()->getName()=="e-Books") {
+                    if ($_category_detail->getName() == "General Information"
+                        || $_category_detail->getName() == "ICRC activities"
+                        || $_category_detail->getName() == "International humanitarian law"
+                    ) {?>
+
+                        <?php
+                        foreach ($_productCollection as $_product):
+                            $image_url = $this->helper('catalog/image')->init($_product, 'thumbnail')
+                                ->setWatermarkImageOpacity(0)->keepFrame(false)->resize(96,96);
+
+                            $alt = $this->htmlEscape($this->stripTags($this->getImageLabel
+                            ($_product, 'small_image'), null, true));
+                            ?>
+
+                            <li class="item">
+                                <div class="image">
+                                    <a href="<?php echo $_product->getProductUrl() ?>">
+                                        <img src="<?php echo $image_url; ?>"
+                                             alt="<?php echo trim($alt)? $alt: $this->htmlEscape($this->stripTags($_product->getName())); ?>"
+                                             title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" width="96" height="96" /></a>
+                                </div>
+                                <div class="title"><a href="<?php echo $_product->getProductUrl() ?>"><?php echo Mage::helper('core/string')->truncate($_product->getName(), 150); ?></a></div>
+                            </li>
+
+                        <?php endforeach; ?>
+                    <?php
+                    }
+                }
+                else {
+                ?>
+                <?php $_items = $this->getItems() ?>
+                <?php foreach ($_items as $_item): ?>
+
+                    <li class="item">
+                        <div class="image">
+                            <a href="<?php echo $_item->getProductUrl() ?>"><img src="<?php echo $_item->getThumbnailUrl(96, 96) ?>"
+                                                                                 alt="<?php echo $_item->getName() ?>" title="<?php echo $_item->getName() ?>" width="96" height="96" /></a>
+                        </div>
+                        <div class="title"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo Mage::helper('core/string')->truncate($_item->getName(), 150); ?></a></div>
+                    </li>
+                <?php endforeach?>
+                <?php }?>
+            </ul>
+        </div>
+        <div class="carousel-control next_button">&nbsp;</div>
     </div>
-    <div class="carousel-control next_button">&nbsp;</div>
-  </div>
 </div>
 <script type="text/javascript">
-<?php if (count($_items)): ?>
-new UI.Carousel("bottom-boughttogether-content", {container: '.bottom-boughttogether-content-container', scrollInc: 4});
-<?php else: ?>
-$$('#bottom-boughttogether-content .carousel-control').invoke('hide');
-<?php endif ?>
+    <?php if (count($_items)): ?>
+    new UI.Carousel("bottom-boughttogether-content", {container: '.bottom-boughttogether-content-container', scrollInc: 4});
+    <?php else: ?>
+    $$('#bottom-boughttogether-content .carousel-control').invoke('hide');
+    <?php endif ?>
 </script>
 <div style="clear: both"></div>
