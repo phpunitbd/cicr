@@ -1,0 +1,52 @@
+<!--@subject Bienvenue, {{var customer.name}}! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"htmlescape var=$customer.name":"Customer Name",
+"store url=\"customer/account/\"":"Customer Account Url"}
+@-->
+
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+
+<body style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<div style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+        <tr>
+            <td align="center" valign="top" style="padding:20px 0 20px 0">
+                <!-- [ header starts here] -->
+                <table bgcolor="FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" style="border:1px solid #E0E0E0;">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px;" border="0"/></a>
+                        </td>
+                    </tr>
+                    <!-- [ middle starts here] -->
+                    <tr>
+                        <td valign="top">
+                            <h1 style="font-size:22px; font-weight:normal; line-height:22px; margin:0 0 11px 0;"">Bonjour {{htmlescape var=$customer.name}},</h1>
+                            <p style="font-size:12px; line-height:16px; margin:0 0 16px 0;">Bienvenue dans l'E-Boutique du CICR. Pour vous connecter à notre site, cliquez sur le lien <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">"se connecter"</a> et saisissez votre e-mail et mot de passe.</p>
+                            <p style="font-size:12px; line-height:16px; margin:0 0 8px 0;">Une fois connecté vous pourrez à tout moment :</p>
+                            <ul style="font-size:12px; line-height:16px; margin:0 0 16px 0; padding:0;">
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; passer vos commandes plus rapidement,</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; contrôler le statut de vos commandes,</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; trouver l'historique de vos commandes,</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; modifier les informations sur votre compte,</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; modifier votre mot de passe,</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; enregistrer différentes adresses (pour envois à différents membres de votre familles et amis),</li>
+                                <li style="list-style:none inside; padding:0 0 0 10px;">&ndash; gérer votre abonnement à la Newsletter.</li>
+                            </ul>
+                            <p style="font-size:12px; line-height:16px; margin:0;">Pour toute question relative à votre compte, n'hésitez pas à nous contacter à <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#1E7EC8;">{{config path='trans_email/ident_support/email'}}</a>.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center;"><center><p style="font-size:12px; margin:0;">Merci de votre confiance et à bientôt.<br />L'équipe CICR E-Commerce.</p></center></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>

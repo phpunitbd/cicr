@@ -1,0 +1,16 @@
+<?php
+  $class = 'odd';
+?>
+<div class="block block-list block-viewed">
+  <div class="block-title">
+    <strong><span><?php echo $this->__('Best Sellers') ?></span></strong>
+  </div>
+  <div class="block-content">
+    <ol class="bestsellers">
+<?php foreach ($this->getProductCollection() as $_product): ?>
+      <li class="item <?php echo $class ?>"><a href="<?php echo $_product->getProductUrl() ?>"><?php echo $_product->getName() ?></a></li>
+<?php $class = ($class == 'odd') ? 'even' : 'odd' ?>
+<?php endforeach ?>
+    </ol>
+  </div>
+</div>

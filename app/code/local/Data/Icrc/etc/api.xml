@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <file translate="title" module="data_icrc">
+                <title>Upload api extension</title>
+                <model>data_icrc/file_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <upload translate="title" module="data_icrc">
+                        <title>Upload a file</title>
+                        <method>upload_file</method>
+                        <acl>data_icrc/file_upload</acl>
+                    </upload>
+                    <getInvoice module="data_icrc">
+                        <title>get an invoice</title>
+                        <method>getInvoice</method>
+                    </getInvoice>
+                </methods>
+                <faults module="data_icrc">
+                <data_invalid>
+                    <code>1</code>
+                    <message>Invalid base64 data.</message>
+                </data_invalid>
+                <name_invalid>
+                    <code>2</code>
+                    <message>Invalid file name.</message>
+                </name_invalid>
+                </faults>
+            </file>
+            <catalog_product_attribute_configurable translate="title" module="data_icrc">
+                <title>Retrieve Configurable Product data</title>
+                <model>data_icrc/catalog_product_attribute_configurable_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <info translate="title" module="data_icrc">
+                        <title>Get Info</title>
+                        <method>info</method>
+                    </info>
+                </methods>
+            </catalog_product_attribute_configurable>
+            <indexer translate="title" module="data_icrc">
+                <title>Use indexer</title>
+                <model>data_icrc/indexer_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <run translate="title" module="data_icrc">
+                        <title>Run indexer</title>
+                        <method>run</method>
+                    </run>
+                </methods>
+            </indexer>
+            <!-- uploadSkuMapping -->
+            <upload_sku translate="title" module="data_icrc">
+                <title>Upload SKU mapping</title>
+                <model>data_icrc/sku_mapping_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <mapping translate="title" module="data_icrc">
+                        <title>Upload SKU mapping</title>
+                        <method>skuMapping</method>
+                    </mapping>
+                </methods>
+            </upload_sku>
+            <!-- datastudioLog -->
+            <datastudio translate="title" module="data_icrc">
+                <title>Datastudio interface</title>
+                <model>data_icrc/datastudio_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <log translate="title" module="data_icrc">
+                        <title>Log an event</title>
+                        <method>log</method>
+                    </log>
+                </methods>
+            </datastudio>
+            <!-- radar -->
+            <radar translate="title" module="data_icrc">
+                <title>RADAR loading</title>
+                <model>data_icrc/radar_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <load translate="title" module="data_icrc">
+                        <title>Load RADAR database</title>
+                        <method>load</method>
+                    </load>
+                </methods>
+            </radar>
+           <!-- newsletter -->
+            <newsletter_subscriber translate="title" module="data_icrc">
+                <title>Newsletter info</title>
+                <model>data_icrc/newsletter_api</model>
+                <acl>data_icrc</acl>
+                <methods>
+                    <info translate="title" module="data_icrc">
+                        <title>Get information on a suscriber</title>
+                        <method>info</method>
+                    </info>
+                </methods>
+            </newsletter_subscriber>
+        </resources>
+        <v2>
+            <resources_function_prefix>
+                <file>file</file>
+                <catalog_product_attribute_configurable>catalogProductAttributeConfigurable</catalog_product_attribute_configurable>
+                <indexer>indexer</indexer>
+                <upload_sku>uploadSku</upload_sku>
+                <datastudio>datastudio</datastudio>
+                <radar>radar</radar>
+                <newsletter_subscriber>newsletterSubscriber</newsletter_subscriber>
+            </resources_function_prefix>
+        </v2>
+        <acl>
+            <resources>
+                <file translate="title" module="data_icrc">
+                    <title>Upload api extension</title>
+                    <upload translate="tilte" module="data_icrc">
+                        <title>Upload a file</title>
+                    </upload>
+                </file>
+            </resources>
+        </acl>
+    </api>
+</config>

@@ -1,0 +1,18 @@
+<div class="form-currency">
+  <label for="icrc-currency-selector"><?php echo $this->__('Currency'); ?> </label>
+  <select name="select-currency" id="icrc-currency-selector" class="chzn-select" data-placeholder="<?php echo $this->getCurrentCurrencyCode() ?>">
+<?php foreach ($this->getCurrencies() as $_code => $_name): ?>
+    <option value="<?php echo $this->getSwitchCurrencyUrl($_code)?>"
+        <?php if($_code == $this->getCurrentCurrencyCode()): ?>
+            selected="selected"
+        <?php endif; ?>>
+        <?php echo $_code ?>
+    </option>
+<?php endforeach; ?>
+  </select>
+  <script type="text/javascript">
+      $('icrc-currency-selector').observe('change',function(evt){
+          window.location = $('icrc-currency-selector').value;
+      });
+  </script>
+</div>

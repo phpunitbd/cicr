@@ -1,0 +1,378 @@
+<layout version="0.1.0">
+  <default>
+    <remove name="cms_footer_links"/>
+    <remove name="footer_links"/>
+    <remove name="left.permanent.callout"/>
+    <remove name="right.permanent.callout"/>
+    <remove name="left.newsletter"/>
+    <remove name="catalog.compare.sidebar"/>
+    <remove name="right.poll"/>
+    <remove name="currency"/>
+    <remove name="paypal.partner.right.logo"/>
+    <remove name="left.reports.product.viewed"/>
+    <remove name="right.reports.product.viewed"/>
+    <remove name="cart_sidebar"/>
+    <remove name="sale.reorder.sidebar"/>
+    <remove name="store_switcher"/>
+    <reference name="header">
+        <block type="data_icrc/newsletter" name="newsletter_register" template="newsletter/data_icrc_register_mini_form.phtml">
+            <action method="setShowTitle"><title>0</title></action>
+            <block type="captcha/captcha" name="captcha">
+                <reference name="head">
+                    <action method="addJs"><file>mage/captcha.js</file></action>
+                </reference>
+              <action method="setFormId"><formId>newsletter</formId></action>
+              <action method="setImgWidth"><width>200</width></action>
+              <action method="setImgHeight"><width>50</width></action>
+            </block>
+        </block>
+      <block type="directory/currency" name="store_currency" as="store_currency" template="page/currency.phtml" />
+      <block type="checkout/cart_sidebar" name="cart_header" template="checkout/cart/header.phtml"/>
+      <block type="core/template" name="mini_login" template="customer/account/mini_login.phtml"/>
+    </reference>
+    <reference name="footer">
+      <block type="cms/block" name="footer_block">
+        <action method="setBlockId"><block_id>page_footer</block_id></action>
+      </block>
+    </reference>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>js/icrc.js</name></action>
+<!--
+TEMPORARY remove webtrends as it does not work in https
+      <action method="addItem"><type>skin_js</type><name>js/javascript-ecom.js</name></action>
+-->
+      <action method="addItem"><type>skin_js</type><name>js/chosen.proto.js</name></action>
+      <action method="addCss"><script>css/icrc.css</script></action>
+      <action method="addCss"><script>css/chosen.css</script></action>
+      <action method="addCss"><script>css/jquery.bxslider.css</script></action>
+      <block type="data_icrc/webtrends" name="webtrends" />
+    </reference>
+    <reference name="catalog.topnav">
+      <action method="setHomeImage"><url>images/nav-home.png</url></action>
+      <block type="core/template" name="top.search" as="topSearch" template="catalogsearch/form.mini.phtml"/>
+    </reference>
+    <reference name="right">
+      <block type="core/template" name="right.icrc.side" before="cart_sidebar" template="page/right.icrc.side.phtml">
+            <block type="cms/block" name="customer_service_side" >
+                <action method="setBlockId"><block_id>customer_service_side</block_id></action>
+            </block>
+            <block type="reports/product_viewed" name="right.icrc.side.viewed" as="last_visited" template="page/right.icrc.side.viewed.phtml"/>
+      </block>
+    </reference>
+  </default>
+
+    <catalog_product_view>
+        <remove name="right.reports.product.compared"/>
+        <remove name="catalog.compare.sidebar"/>
+        <!--remove name="catalog.product.related"/-->
+        <remove name="right.poll"/>
+        <remove name="paypal.partner.right.logo"/>
+        <remove name="right.permanent.callout"/>
+        <!--remove name="cart_sidebar"/-->
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-footer.phtml</template></action>
+            <block type="core/template" name="column_footer" template="children.phtml">
+              <block type="catalog/product_list_related" name="catalog.product.related" as="recommanded" template="catalog/product/list/recommanded.phtml"/>
+              <block type="catalog/product_list_upsell" name="product.info.upsell" as="boughttogether" template="catalog/product/list/boughttogether.phtml">
+                      <action method="setItemLimit"><type>upsell</type><limit>10</limit></action>
+              </block>
+            </block>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/addtocart-ajax.js</name></action>
+            <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
+            <action method="addItem"><type>skin_js</type><name>js/carousel.ui.js</name></action>
+            <action method="addJs"><file>mage/captcha.js</file></action>
+            <action method="addItemFirst"><type>skin_js</type><name>js/jquery.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery.fancybox.pack.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/jquery.fancybox.css</name></action>
+        </reference>
+        <reference name="product.info">
+                <action method="unsetChild"><alias>additional</alias></action>
+        </reference>
+        <reference name="right">
+                <action method="unsetChild"><alias>catalog.product.related</alias></action>
+        </reference>
+        <reference name="product.info">
+            <action method="unsetChild"><alias>upsell_products</alias></action>
+            <block type="core/template" name="product_share" template="catalog/product/share.phtml"/>
+            <block type="catalog/product_view_type_configurable" name="product.info.options.configurable" as="options_configurable2" before="-" template="catalog/product/view/type/options/configurable.phtml"/>
+        </reference>
+        <reference name="product.info.additional">
+            <action method="unsetChild"><name>product_tag_list</name></action>
+        </reference>
+        <reference name="right.icrc.side">
+            <action method="unsetChild"><name>newsletter</name></action>
+        </reference>
+    </catalog_product_view>
+  
+  <PRODUCT_TYPE_configurable>
+	  <reference name="product.info.addtocart">
+		  <block type="catalog/product_view_type_configurable" name="product.info.options.configurable" as="options_configurable2" before="-" template="catalog/product/view/type/options/configurable.phtml"/>
+	  </reference>
+  </PRODUCT_TYPE_configurable>
+
+  <catalog_category_default>
+    <reference name="product_list">
+      <action method="setColumnCount"><count>2</count></action>
+    </reference>
+    <reference name="product_list_toolbar">
+    </reference>
+  </catalog_category_default>
+
+  <catalog_category_view>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>js/addtocart-ajax.js</name></action>
+    </reference>
+  </catalog_category_view>
+
+  <catalog_category_layered>
+	  <remove name="breadcrumbs"/>
+    <reference name="root">
+      <action method="setTemplate"><template>page/3columns.phtml</template></action>
+    </reference>
+    <reference name="product_list">
+      <action method="setColumnCount"><count>2</count></action>
+    </reference>
+  </catalog_category_layered>
+
+  <catalogsearch_result_index>
+	  <remove name="breadcrumbs"/>
+    <reference name="search_result_list">
+      <action method="setColumnCount"><count>2</count></action>
+    </reference>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>js/addtocart-ajax.js</name></action>
+    </reference>
+    <reference name="root">
+      <action method="setTemplate"><template>page/3columns.phtml</template></action>
+    </reference>
+  </catalogsearch_result_index>
+
+  <icrc_home_index>
+    <remove name="breadcrumbs"/>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+    <reference name="head">
+      <action method="addItemFirst"><type>skin_js</type><name>js/jquery.js</name></action>
+      <action method="addItemFirst"><type>skin_js</type><name>js/jquery_compat.js</name></action>
+      <action method="addItem"><type>skin_js</type><name>js/jquery.bxslider.js</name></action>
+      <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
+      <action method="addItem"><type>skin_js</type><name>js/carousel.ui.js</name></action>
+    </reference>
+    <reference name="content">
+      <block type="core/template" name="index_slider" template="home/slider.phtml">
+        <block type="cms/block" name="index_slide_1">
+          <action method="setBlockId"><id>index_slide_1</id></action>
+        </block>
+        <block type="cms/block" name="index_slide_2">
+          <action method="setBlockId"><id>index_slide_2</id></action>
+        </block>
+        <block type="cms/block" name="index_slide_3">
+          <action method="setBlockId"><id>index_slide_3</id></action>
+        </block>
+        <block type="cms/block" name="index_slide_4">
+          <action method="setBlockId"><id>index_slide_4</id></action>
+        </block>
+        <block type="cms/block" name="potm">
+          <action method="setBlockId"><id>index_potm</id></action>
+        </block>
+      </block>
+      <block type="icrc/bestsellers" name="index_bestsellers" template="home/bottom_bestsellers.phtml"/>
+      <block type="core/template" name="index_publiref" template="home/bottom_publiref.phtml">
+        <block type="cms/block" name="cms_block_ref_pub">
+          <action method="setBlockId"><id>ref_pub</id></action>
+        </block>
+      </block>
+    </reference>
+  </icrc_home_index>
+
+  <icrc_video_view>
+    <reference name="content">
+      <block type="core/template" name="video.player" template="catalog/video.phtml"/>
+    </reference>
+  </icrc_video_view>
+
+  <checkout_cart_index>
+    <remove name="checkout.cart.crosssell"/>
+    <remove name="checkout.cart.coupon"/>
+    <remove name="checkout.cart.shipping"/>
+    <reference name="checkout.cart">
+      <block type="icrc/checkout_steps" name="checkout_steps" template="checkout/steps.phtml">
+        <action method="setStep"><step>1</step></action>
+      </block>
+      <block type="icrc/checkout_donation" name="checkout_donation" template="checkout/donation.phtml"/>
+    </reference>
+  </checkout_cart_index>
+
+  <checkout_onepage_index>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+    <reference name="checkout.onepage">
+      <block type="icrc/checkout_steps" name="checkout_steps" template="checkout/steps.phtml">
+        <action method="setStep"><step>2</step></action>
+      </block>
+    </reference>
+    <reference name="checkout.onepage.shipping">
+      <block type="data_icrc/address_internal" name="internal.address.data" template="customer/address/internal.phtml">
+        <action method="setWithComment"><comment>1</comment></action>
+        <action method="setWithShippingMethod"><method>1</method></action>
+        <action method="setPrefix"><prefix>shipping</prefix></action>
+      </block>
+    </reference>
+  </checkout_onepage_index>
+
+  <checkout_onepage_saveallsteps>
+    <block type="icrc/checkout_steps" name="checkout_steps" template="checkout/steps.phtml">
+      <action method="setStep"><step>3</step></action>
+    </block>
+    <reference name="root">
+      <block type="checkout/onepage_progress" name="checkout.progress.info" as="progress_info" template="checkout/onepage/progress.phtml"/>
+    </reference>
+  </checkout_onepage_saveallsteps>
+
+  <checkout_onepage_success>
+    <reference name="checkout.success">
+      <action method="setTemplate"><template>override/cms/block.phtml</template></action>
+      <action method="setBlockId"><id>checkout_success</id></action>
+    </reference>
+  </checkout_onepage_success>
+
+  <checkout_onepage_failure>
+    <reference name="checkout.failure">
+      <action method="setTemplate"><template>override/cms/block.phtml</template></action>
+      <action method="setBlockId"><id>checkout_failure</id></action>
+    </reference>
+  </checkout_onepage_failure>
+
+  <icrc_payment_message>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+  </icrc_payment_message>
+
+  <contacts_index_index>
+    <reference name="contactForm">
+      <block type="core/text_list" name="form.additional.info">
+        <block type="captcha/captcha" name="captcha">
+          <reference name="head">
+            <action method="addJs"><file>mage/captcha.js</file></action>
+          </reference>
+          <action method="setFormId"><formId>contact</formId></action>
+          <action method="setImgWidth"><width>230</width></action>
+          <action method="setImgHeight"><width>50</width></action>
+        </block>
+      </block>
+    </reference>
+  </contacts_index_index>
+
+  <icrc_newsletter_index>
+    <reference name="root">
+      <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+    </reference>
+    <reference name="content">
+      <block type="core/template" name="register" template="newsletter/data_icrc_register.phtml">
+        <block type="core/template" name="register_form" template="newsletter/data_icrc_register_form.phtml">
+          <action method="setShowTitle"><title>1</title></action>
+          <block type="captcha/captcha" name="captcha">
+            <reference name="head">
+              <action method="addJs"><file>mage/captcha.js</file></action>
+            </reference>
+            <action method="setFormId"><formId>newsletter</formId></action>
+            <action method="setImgWidth"><width>230</width></action>
+            <action method="setImgHeight"><width>50</width></action>
+          </block>
+        </block>
+      </block>
+    </reference>
+  </icrc_newsletter_index>
+  
+  <customer_address_form>
+    <reference name="customer_address_edit">
+      <block type="data_icrc/address_internal" name="internal.address.data" template="customer/address/internal.phtml">
+        <action method="setWithComment"><comment>0</comment></action>
+      </block>
+    </reference>
+  </customer_address_form>
+  
+  <icrc_customer_billing translate="label">
+  </icrc_customer_billing>
+  
+  <icrc_customer_billing_index translate="label">
+    <label>Customer My Account Billing</label>
+    <update handle="icrc_customer_billing"/>
+    <update handle="customer_account"/>
+    <reference name="root">
+        <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        <action method="setHeaderTitle" translate="title" module="customer"><title>Account Billing Informations</title></action>
+    </reference>
+    <reference name="my.account.wrapper">
+      <block type="data_icrc/customer_billing" name="customer_account_billing" template="customer/account/billing.phtml"/>
+    </reference>
+  </icrc_customer_billing_index>
+  
+  <icrc_customer_billing_new translate="label">
+    <update handle="icrc_customer_billing"/>
+    <update handle="customer_account"/>
+    <reference name="my.account.wrapper">
+      <block type="data_icrc/customer_billing" name="customer_account_billing" template="customer/account/billing/edit.phtml"/>
+    </reference>
+  </icrc_customer_billing_new>
+
+  <icrc_exhibition_get>
+    <update handle="contacts_index_index"/>
+  </icrc_exhibition_get>
+  
+  <icrc_radar_validator>
+    <reference name="root">
+        <action method="setTemplate"><template>js/radar.phtml</template></action>
+    </reference>
+  </icrc_radar_validator>
+
+  <PRODUCT_TYPE_grouped>
+    <reference name="product.info.addtocart">
+      <block type="data_icrc/product_grouped" name="icrc.grouped.product" template="catalog/product/view/grouped.phtml" />
+    </reference>
+  </PRODUCT_TYPE_grouped>
+    <sales_email_order_items>
+        <block type="sales/order_email_items" name="items" template="email/order/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_order_default</block><template>email/order/items/order/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_email_items_order_grouped</block><template>email/order/items/order/default.phtml</template></action>
+            <block type="data_icrc/sales_order_totals" name="order_totals" template="email/order/totals.phtml">
+                <action method="setLabelProperties"><value>colspan="3" align="right" style="padding:3px 9px"</value></action>
+                <action method="setValueProperties"><value>align="right" style="padding:3px 9px"</value></action>
+                <block type="tax/sales_order_tax" name="tax" template="email/order/tax.phtml">
+                    <action method="setIsPlaneMode"><value>1</value></action>
+                </block>
+            </block>
+        </block>
+        <block type="core/text_list" name="additional.product.info" />
+    </sales_email_order_items>
+    <sales_email_order_invoice_items>
+        <block type="sales/order_email_invoice_items" name="items" template="email/order/invoice/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>email/order/items/invoice/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_email_items_order_grouped</block><template>email/order/items/invoice/default.phtml</template></action>
+            <block type="data_icrc/sales_order_invoice_totals" name="invoice_totals" template="email/order/totals.phtml">
+                <action method="setLabelProperties"><value>colspan="3" align="right" style="padding:3px 9px"</value></action>
+                <action method="setValueProperties"><value>align="right" style="padding:3px 9px"</value></action>
+                <block type="tax/sales_order_tax" name="tax" template="email/order/tax.phtml"/>
+            </block>
+        </block>
+        <block type="core/text_list" name="additional.product.info" />
+    </sales_email_order_invoice_items>
+    <sales_email_order_creditmemo_items>
+        <block type="sales/order_email_creditmemo_items" name="items" template="email/order/creditmemo/items.phtml">
+            <action method="addItemRender"><type>default</type><block>sales/order_email_items_default</block><template>email/order/items/creditmemo/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>sales/order_email_items_order_grouped</block><template>email/order/items/creditmemo/default.phtml</template></action>
+            <block type="data_icrc/sales_order_creditmemo_totals" name="creditmemo_totals" template="email/order/totals.phtml">
+                <action method="setLabelProperties"><value>colspan="3" align="right" style="padding:3px 9px"</value></action>
+                <action method="setValueProperties"><value>align="right" style="padding:3px 9px"</value></action>
+                <block type="tax/sales_order_tax" name="tax" template="email/order/tax.phtml"/>
+            </block>
+        </block>
+        <block type="core/text_list" name="additional.product.info" />
+    </sales_email_order_creditmemo_items>
+</layout>
+

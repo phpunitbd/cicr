@@ -1,0 +1,55 @@
+<?php $_code = $this->getMethodCode() ?>
+<ul class="sp-methods icrc-payment-info form-list" id="payment_form_<?php echo $_code ?>">
+  <li class="icrc-internal">
+    <label for="icrc-int-unit" class="required">Unit Name or Delegation<em>*</em></label>
+    <div class="input-box">
+      <input type="text" class="input-text required-entry" id="icrc-int-unit" name="payment[icrc_unit]" value="" />
+    </div>
+<?php /*
+    <select id="icrc-int-unit" name="payment[icrc_unit]" type="text" class="required-entry">
+      <option value="" class="info">&emsp;Delegations</option>
+      <?php foreach ($this->getDelegations() as $v => $i): ?>
+        <option value="<?php echo $v ?>"<?php if ($i['selected']) echo 'selected="selected"' ?>><?php echo $i['display'] ?></option>
+      <?php endforeach ?>
+      <option value="" class="info">&emsp;Units</option>
+      <?php foreach ($this->getUnits() as $v => $i): ?>
+        <option value="<?php echo $v ?>"<?php if ($i['selected']) echo 'selected="selected"' ?>><?php echo $i['display'] ?></option>
+      <?php endforeach ?>
+    </select>
+*/ ?>
+  </li>
+  <li class="icrc-internal">
+    <label for="icrc-int-cc" class="required">Cost Center<em>*</em></label>
+    <div class="input-box">
+      <input type="text" class="input-text required-entry" id="icrc-int-cc" name="payment[icrc_cost_center]" value="" />
+    </div>
+<?php /*
+    <select id="icrc-int-cc" name="payment[icrc_cost_center]" type="text" class="required-entry">
+      <option value=""></option>
+      <?php foreach ($this->getCostCenter() as $v => $i): ?>
+        <option value="<?php echo $v ?>"<?php if ($i['selected']) echo 'selected="selected"' ?>><?php echo $i['display'] ?></option>
+      <?php endforeach ?>
+    </select>
+*/ ?>
+  </li>
+  <li class="icrc-internal">
+    <label for="icrc-int-oc" class="required">Objective code<em>*</em></label>
+    <div class="input-box">
+      <input type="text" class="input-text required-entry" id="icrc-int-oc" name="payment[icrc_objective_code]" value="" />
+    </div>
+<?php /*
+    <select id="icrc-int-oc" name="payment[icrc_objective_code]" type="text" class="required-entry">
+      <option value=""></option>
+      <?php foreach ($this->getObjectiveCodes() as $v => $i): ?>
+        <option value="<?php echo $v ?>"<?php if ($i['selected']) echo 'selected="selected"' ?>><?php echo $i['display'] ?></option>
+      <?php endforeach ?>
+    </select>
+*/ ?>
+  </li>
+  <li class="icrc-internal">
+    <label for="icrc-int-com">Comments & Justifications</label>
+    <div class="input-box">
+      <textarea id="icrc-int-com" name="payment[icrc_com]" class="input-text"><?php echo $this->getComments() ?></textarea>
+    </div>
+  </li>
+</ul>

@@ -1,0 +1,12 @@
+<?php
+
+echo $this->getMessagesBlock()->getGroupedHtml();
+
+$variables = $this->getData();
+Data_Icrc_Helper_Debug::msgdump('override/cms/block set variables: ', $variables);
+
+$block = $this->getLayout()->createBlock('cms/block')->setBlockId($this->getBlockId());
+$filter = Mage::getModel('cms/template_filter');
+$filter->setVariables($variables);
+echo $filter->filter($block->toHtml());
+

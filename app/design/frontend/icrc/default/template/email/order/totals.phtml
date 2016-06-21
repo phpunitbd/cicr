@@ -1,0 +1,96 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var $this Mage_Sales_Block_Order_Totals
+ * @see Mage_Sales_Block_Order_Totals
+ */
+?>
+<?php
+$totals = $this->getTotals();
+if($totals['subtotal']):
+    $totals['subtotal']['sort_order'] = 200;
+endif;
+if($totals['discount']):
+	$totals['discount']['sort_order'] = 100;
+endif;
+if($totals['shipping']):
+    $totals['shipping']['sort_order'] = 300;
+endif;
+if($totals['tax']):
+    $totals['tax']['sort_order'] = 400;
+endif;
+if($totals['grand_total']):
+    $totals['grand_total']['sort_order'] = 500;
+endif;
+usort($totals, array($this, '_sortTotalsList'));
+?>
+<?php
+if(count($totals) > 0):
+	foreach ($totals as $_code => $_total): ?>
+	    <?php
+	    if($_total->getCode() == 'subtotal') {
+		$label = $this->__('Subtotal excl Tax');
+		$_total->setValue($_total->getValue()-$discount);
+	    } elseif($_total->getCode() == 'grand_total') {
+		$label = $this->__('Grand Total TTC');
+	    } elseif($_total->getCode() == 'discount') {
+		$discount = str_replace('-', '', $_total->getValue());
+		$label = $_total->getLabel();
+	    } else {
+		$label = $_total->getLabel();
+	    }
+	    ?>
+	    <?php if ($_total->getBlockName()): ?>
+		<?php echo $this->getChildHtml($_total->getBlockName(), false); ?>
+	    <?php else:?>
+	    <tr class="<?php echo $_code?>">
+		<td <?php echo $this->getLabelProperties()?>>
+		    <?php if ($_total->getStrong()):?>
+		    <strong><?php echo $this->escapeHtml($label);?></strong>
+		    <?php else:?>
+		    <?php echo $this->escapeHtml($label);?>
+		    <?php endif?>
+		</td>
+		<td <?php echo $this->getValueProperties()?> width="100"> 
+		    <?php
+		    $pos = strpos($this->formatValue($_total), 'Fr.');
+		    if($pos === false) {
+		        $amount = $this->formatValue($_total);
+		    } else {
+		        $amount = str_replace('Fr.', '', $this->formatValue($_total)). ' CHF';
+		    }
+		    ?>
+		    <?php if ($_total->getStrong()):?>
+		        <strong><?php echo $amount; ?></strong>
+		    <?php else:?>
+		        <?php echo $amount; ?>
+		    <?php endif?>
+		</td>
+	    </tr>
+	    <?php endif?>
+	<?php
+	endforeach;
+endif; ?>

@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="datastudio"
+ targetNamespace="http://www.data.fr/ws/2.0"
+ xmlns:tns="http://www.data.fr/ws/2.0"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns="http://www.data.fr/ws/2.0"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="http://www.data.fr/ws/2.0"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns="http://www.data.fr/ws/2.0"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <simpleType name="objectType-t">
+   <restriction base="xsd:string">
+    <enumeration value="project"/><!-- enum const = 0 -->
+    <enumeration value="parameter"/><!-- enum const = 1 -->
+   </restriction>
+  </simpleType>
+  <complexType name="tm">
+   <sequence>
+     <element name="tm-sec" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-min" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-hour" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-mday" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-mon" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-year" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-wday" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-yday" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="tm-isdst" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="param-t">
+   <sequence>
+     <element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="bound" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="execrun-t">
+   <sequence>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="projCode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="pairstring-t">
+   <sequence>
+     <element name="code" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="label" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="param-w-label-t">
+   <sequence>
+     <element name="name" type="ns:pairstring-t" minOccurs="1" maxOccurs="1"/>
+     <element name="type" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="value" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="bound" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="nullresult">
+   <sequence>
+   </sequence>
+  </complexType>
+  <complexType name="item">
+   <sequence>
+    <choice>
+     <element name="integer" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="decimal" type="xsd:decimal" minOccurs="1" maxOccurs="1"/>
+     <element name="string" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="dateTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+    </choice>
+     <element name="mStrContainer" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="filereturn">
+   <sequence>
+     <element name="filename" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="base64content" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+   </sequence>
+  </complexType>
+  <complexType name="rowreturn">
+   <sequence>
+     <element name="col" type="ns:item" minOccurs="0" maxOccurs="unbounded"/>
+   </sequence>
+  </complexType>
+  <complexType name="return-data-item">
+   <sequence>
+     <element name="name" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+    <choice>
+     <element name="integer" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="decimal" type="xsd:decimal" minOccurs="1" maxOccurs="1"/>
+     <element name="string" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+     <element name="dateTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1"/>
+     <element name="file" type="ns:filereturn" minOccurs="1" maxOccurs="1"/>
+     <element name="row" type="ns:rowreturn" minOccurs="1" maxOccurs="1"/>
+    </choice>
+   </sequence>
+  </complexType>
+  <complexType name="labelRequest-t">
+   <sequence>
+     <element name="code" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="type" type="ns:objectType-t" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <complexType name="labelResponse-t">
+   <sequence>
+     <element name="code" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="type" type="ns:objectType-t" minOccurs="1" maxOccurs="1"/>
+     <element name="label" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+   </sequence>
+  </complexType>
+  <!-- operation request element -->
+  <element name="login">
+   <complexType>
+    <sequence>
+     <element name="username" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="password" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="loginResponse">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectList">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="stringlist-t">
+   <complexType>
+    <sequence>
+     <element name="mStrings" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectLabeledList">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="getProjectLabeledListResponse">
+   <complexType>
+    <sequence>
+     <element name="projects" type="ns:pairstring-t" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectInfo">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="paramlist-t">
+   <complexType>
+    <sequence>
+     <element name="mParams" type="ns:param-t" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getProjectLabeledInfo">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="getProjectLabeledInfoResponse">
+   <complexType>
+    <sequence>
+     <element name="params" type="ns:param-w-label-t" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="runProject">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="params" type="ns:paramlist-t" minOccurs="1" maxOccurs="1"/>
+     <element name="synchrone" type="xsd:boolean" minOccurs="1" maxOccurs="1" default="false"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="runProjectResponse">
+   <complexType>
+    <sequence>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="runProjectLabeled">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="params" type="ns:param-w-label-t" minOccurs="1" maxOccurs="unbounded"/>
+     <element name="synchrone" type="xsd:boolean" minOccurs="1" maxOccurs="1" default="false"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="runProjectLabeledResponse">
+   <complexType>
+    <sequence>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExecStatus">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="fromLine" type="xsd:int" minOccurs="1" maxOccurs="1" default="0"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="execstatus-t">
+   <complexType>
+    <sequence>
+     <element name="progress" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="return-value" type="xsd:int" minOccurs="1" maxOccurs="1" default="0"/>
+     <element name="messages" type="ns:stringlist-t" minOccurs="1" maxOccurs="1"/>
+     <element name="status" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getExecReturnData">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="return-data-t">
+   <complexType>
+    <sequence>
+     <element name="items" type="ns:return-data-item" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getParamValues">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="parameter" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getRunningProjects">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="execlist-t">
+   <complexType>
+    <sequence>
+     <element name="mExecutions" type="ns:execrun-t" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="stopExec">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="force" type="xsd:boolean" minOccurs="1" maxOccurs="1" default="false"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="stopExecResponse">
+   <complexType>
+    <sequence>
+     <element name="dummy" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="closeExec">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="execId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="closeExecResponse">
+   <complexType>
+    <sequence>
+     <element name="dummy" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="refreshWorkspace">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="refreshWorkspaceResponse">
+   <complexType>
+    <sequence>
+     <element name="dummy" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="getData">
+   <complexType>
+    <sequence>
+     <element name="hashcode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+     <element name="rsId" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+     <element name="fromLine" type="xsd:int" minOccurs="1" maxOccurs="1" default="0"/>
+     <element name="toLine" type="xsd:int" minOccurs="1" maxOccurs="1" default="0"/>
+     <element name="orderCols" type="xsd:int" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="RSreturn">
+   <complexType>
+    <sequence>
+     <element name="collabels" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+     <element name="rows" type="ns:rowreturn" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+     <attribute name="totalRecords" type="xsd:int" use="required"/>
+   </complexType>
+  </element>
+ </schema>
+
+</types>
+
+<message name="loginRequest">
+ <part name="parameters" element="ns:login"/>
+</message>
+
+<message name="loginResponse">
+ <part name="parameters" element="ns:loginResponse"/>
+</message>
+
+<message name="getProjectList">
+ <part name="parameters" element="ns:getProjectList"/>
+</message>
+
+<message name="stringlist-t">
+ <part name="parameters" element="ns:stringlist-t"/>
+</message>
+
+<message name="getProjectLabeledListRequest">
+ <part name="parameters" element="ns:getProjectLabeledList"/>
+</message>
+
+<message name="getProjectLabeledListResponse">
+ <part name="parameters" element="ns:getProjectLabeledListResponse"/>
+</message>
+
+<message name="getProjectInfo">
+ <part name="parameters" element="ns:getProjectInfo"/>
+</message>
+
+<message name="paramlist-t">
+ <part name="parameters" element="ns:paramlist-t"/>
+</message>
+
+<message name="getProjectLabeledInfoRequest">
+ <part name="parameters" element="ns:getProjectLabeledInfo"/>
+</message>
+
+<message name="getProjectLabeledInfoResponse">
+ <part name="parameters" element="ns:getProjectLabeledInfoResponse"/>
+</message>
+
+<message name="runProjectRequest">
+ <part name="parameters" element="ns:runProject"/>
+</message>
+
+<message name="runProjectResponse">
+ <part name="parameters" element="ns:runProjectResponse"/>
+</message>
+
+<message name="runProjectLabeledRequest">
+ <part name="parameters" element="ns:runProjectLabeled"/>
+</message>
+
+<message name="runProjectLabeledResponse">
+ <part name="parameters" element="ns:runProjectLabeledResponse"/>
+</message>
+
+<message name="getExecStatus">
+ <part name="parameters" element="ns:getExecStatus"/>
+</message>
+
+<message name="execstatus-t">
+ <part name="parameters" element="ns:execstatus-t"/>
+</message>
+
+<message name="getExecReturnData">
+ <part name="parameters" element="ns:getExecReturnData"/>
+</message>
+
+<message name="return-data-t">
+ <part name="parameters" element="ns:return-data-t"/>
+</message>
+
+<message name="getParamValues">
+ <part name="parameters" element="ns:getParamValues"/>
+</message>
+
+<message name="getRunningProjects">
+ <part name="parameters" element="ns:getRunningProjects"/>
+</message>
+
+<message name="execlist-t">
+ <part name="parameters" element="ns:execlist-t"/>
+</message>
+
+<message name="stopExecRequest">
+ <part name="parameters" element="ns:stopExec"/>
+</message>
+
+<message name="stopExecResponse">
+ <part name="parameters" element="ns:stopExecResponse"/>
+</message>
+
+<message name="closeExecRequest">
+ <part name="parameters" element="ns:closeExec"/>
+</message>
+
+<message name="closeExecResponse">
+ <part name="parameters" element="ns:closeExecResponse"/>
+</message>
+
+<message name="refreshWorkspaceRequest">
+ <part name="parameters" element="ns:refreshWorkspace"/>
+</message>
+
+<message name="refreshWorkspaceResponse">
+ <part name="parameters" element="ns:refreshWorkspaceResponse"/>
+</message>
+
+<message name="getData">
+ <part name="parameters" element="ns:getData"/>
+</message>
+
+<message name="RSreturn">
+ <part name="parameters" element="ns:RSreturn"/>
+</message>
+
+<portType name="datastudioPortType">
+ <operation name="login">
+  <documentation>This method logs the user into the server, and returns a hashcode used by all other methods to authenticate the connection. This hashcode have a limited validity, extended each time it is used.</documentation>
+  <input message="tns:loginRequest"/>
+  <output message="tns:loginResponse"/>
+ </operation>
+ <operation name="getProjectList">
+  <documentation>This method returns the list of projects published by this SOAP server.</documentation>
+  <input message="tns:getProjectList"/>
+  <output message="tns:stringlist-t"/>
+ </operation>
+ <operation name="getProjectLabeledList">
+  <documentation>Service definition of function ns__getProjectLabeledList</documentation>
+  <input message="tns:getProjectLabeledListRequest"/>
+  <output message="tns:getProjectLabeledListResponse"/>
+ </operation>
+ <operation name="getProjectInfo">
+  <documentation>This method returns the parameters requested by a give project.</documentation>
+  <input message="tns:getProjectInfo"/>
+  <output message="tns:paramlist-t"/>
+ </operation>
+ <operation name="getProjectLabeledInfo">
+  <documentation>Service definition of function ns__getProjectLabeledInfo</documentation>
+  <input message="tns:getProjectLabeledInfoRequest"/>
+  <output message="tns:getProjectLabeledInfoResponse"/>
+ </operation>
+ <operation name="runProject">
+  <documentation>This method runs a project with its given parameters. The metods returns immediatly if the <i>synchrone</i> parameter is false or omitted, or returns at the end of the project execution if it's true. The return value can be used for requesting status and message trace for this run.</documentation>
+  <input message="tns:runProjectRequest"/>
+  <output message="tns:runProjectResponse"/>
+ </operation>
+ <operation name="runProjectLabeled">
+  <documentation>see runProject</documentation>
+  <input message="tns:runProjectLabeledRequest"/>
+  <output message="tns:runProjectLabeledResponse"/>
+ </operation>
+ <operation name="getExecStatus">
+  <documentation>This method returns the status of a given execution, and its trace from the given line to the last one.</documentation>
+  <input message="tns:getExecStatus"/>
+  <output message="tns:execstatus-t"/>
+ </operation>
+ <operation name="getExecReturnData">
+  <documentation>This method returns the return data from a terminated project.</documentation>
+  <input message="tns:getExecReturnData"/>
+  <output message="tns:return-data-t"/>
+ </operation>
+ <operation name="getParamValues">
+  <documentation>This method returns the values of a domain-bouned parameter.</documentation>
+  <input message="tns:getParamValues"/>
+  <output message="tns:stringlist-t"/>
+ </operation>
+ <operation name="getRunningProjects">
+  <documentation>This method lists running and saved execution contexts on the server, providing their project code and execution ID.</documentation>
+  <input message="tns:getRunningProjects"/>
+  <output message="tns:execlist-t"/>
+ </operation>
+ <operation name="stopExec">
+  <documentation>This method stops a a given execution.</documentation>
+  <input message="tns:stopExecRequest"/>
+  <output message="tns:stopExecResponse"/>
+ </operation>
+ <operation name="closeExec">
+  <documentation>This methods closes a given execution context, discaring any traces on the server and saving memory.</documentation>
+  <input message="tns:closeExecRequest"/>
+  <output message="tns:closeExecResponse"/>
+ </operation>
+ <operation name="refreshWorkspace">
+  <documentation>This methods refreshes the workspace cache data, to reflect modifications in projects, parameters, datazone or dataobjects.</documentation>
+  <input message="tns:refreshWorkspaceRequest"/>
+  <output message="tns:refreshWorkspaceResponse"/>
+ </operation>
+ <operation name="getData">
+  <documentation>Service definition of function ns__getData</documentation>
+  <input message="tns:getData"/>
+  <output message="tns:RSreturn"/>
+ </operation>
+</portType>
+
+<binding name="datastudio" type="tns:datastudioPortType">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="login">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectLabeledList">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectInfo">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getProjectLabeledInfo">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="runProject">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="runProjectLabeled">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExecStatus">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getExecReturnData">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getParamValues">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getRunningProjects">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="stopExec">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="closeExec">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="refreshWorkspace">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+ <operation name="getData">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="parameters" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="parameters" use="literal"/>
+  </output>
+ </operation>
+</binding>
+
+<service name="datastudio">
+ <documentation>Datastudio SOAP interface for projects</documentation>
+ <port name="datastudio" binding="tns:datastudio">
+  <SOAP:address location="http://data-devsrv1:8118/"/>
+ </port>
+</service>
+
+</definitions>

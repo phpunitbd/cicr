@@ -1,0 +1,32 @@
+<?php
+$first = true;
+?>
+<div id="home_slider_wrapper">
+  <div class="product-of-the-month">
+    <?php echo $this->getChildHtml('potm'); ?>
+  </div>
+  <div id="icrc_home_slider" class="protoshow">
+    <div id="slider">
+      <ul class="show">
+    <?php foreach ($this->getSortedChildBlocks() as $child) : ?>
+        <?php if ($child->getNameInLayout() == 'potm') continue; ?>
+		    <li class="slide">
+          <?php echo $this->getChildHtml($child->getNameInLayout()); ?>
+        </li>
+    <?php endforeach; ?>
+      </ul>
+    </div>
+  </div>
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+	    $('#slider .show').bxSlider({
+	      auto: true,
+	      mode: 'horizontal',
+	      pause: 10000, // durée affichage
+	      autoHover:true,
+	      infiniteLoop: true,
+	      speed:600 // durée anim
+	      });
+	    });
+  </script>
+</div>

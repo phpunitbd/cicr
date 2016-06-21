@@ -1,0 +1,40 @@
+<?php
+$video = $this->getProduct();
+if ($video) {
+  $url = $video->getStreamingLink();
+  if ($url == '') $url = null;
+}
+else {
+  $url = null;
+}
+?>
+<?php if (!empty($url)): ?>
+  <?php if (!$this->getNoTitle()): ?>
+    <h1><?php echo $video->getName() ?></h1>
+  <?php endif ?>
+<object id="player" name="player" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9.0.115" width="384" height="246">
+  <param name="bgcolor" value="#000000" />
+  <param name="movie" value="http://www.icrc.org/attributes/flash-player/player-licensed.swf" />
+  <param name="allowfullscreen" value="true" />
+  <param name="allowscriptaccess" value="always" />
+  <param name="wmode" value="transparent" />
+  <param name="flashvars" value="streamer=rtmp://stream.icrc.org/vod&file=<?php echo $url ?>&controlbar=bottom&skin=http://www.icrc.org/attributes/flash-player/modieus.swf&frontcolor=FFFFFF&stretching=uniform&autostart=true" />
+  <!--[if !IE]>-->
+  <object data="http://www.icrc.org/attributes/flash-player/player-licensed.swf" type="application/x-shockwave-flash" width="384" height="246">
+    <param name="pluginurl" value="http://www.adobe.com/products/flashplayer.html" />
+    <param name="bgcolor" value="#000000" />
+    <param name="allowfullscreen" value="true" />
+    <param name="allowscriptaccess" value="always" />
+    <param name="wmode" value="transparent" />
+    <param name="flashvars" value="streamer=rtmp://stream.icrc.org/vod&file=<?php echo $url ?>&controlbar=bottom&skin=http://www.icrc.org/attributes/flash-player/modieus.swf&frontcolor=FFFFFF&stretching=uniform&autostart=true" />
+    <!--<![endif]-->
+    <!-- Else render the text -->
+    <p>To view this content you need to install a Flash Player plug-in.: <a href="http://www.adobe.com/products/flashplayer.html">Clicker ici pour installer</a>.</p>
+    <!--[if !IE]>-->
+  </object>
+  <!--<![endif]-->
+</object>
+<?php else: ?>
+<?php echo $this->__('The video cannot be played.') ?>
+<?php endif ?>
+

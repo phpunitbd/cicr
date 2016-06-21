@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:typens="urn:{{var wsdl.name}}"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             name="{{var wsdl.name}}"
+             targetNamespace="urn:{{var wsdl.name}}">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:{{var wsdl.name}}">
+            <xsd:complexType name="catalogProductAttributeOptionLabelEntity">
+                <xsd:all>
+                    <xsd:element name="store_id" type="typens:ArrayOfString" />
+                    <xsd:element name="value" type="xsd:string" />
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:complexType name="catalogProductAttributeOptionLabelArray">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="complexObjectArray" type="typens:catalogProductAttributeOptionLabelEntity" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="catalogProductAttributeOptionEntityToAdd">
+                <xsd:all>
+                    <xsd:element name="label" type="typens:catalogProductAttributeOptionLabelArray" />
+                    <xsd:element name="order" type="xsd:int" />
+                    <xsd:element name="is_default" type="xsd:int" />
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:element name="catalogProductAttributeAddOptionRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="attribute" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="data" type="typens:catalogProductAttributeOptionEntityToAdd" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="catalogProductAttributeAddOptionResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="catalogProductAttributeRemoveOptionRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="attribute" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="optionId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="catalogProductAttributeRemoveOptionResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fileUploadRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="mime" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="name" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="content" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fileUploadResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fileGetInvoiceRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="invoiceId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="fileGetInvoiceResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="catalogProductAttributeConfigurableInfoRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="productId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="attributeId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="catalogProductAttributeConfigurableInfoResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="indexerRunRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="indexerId" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="indexerRunResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="uploadSkuMappingRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="skuMap" type="typens:skuMap" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="uploadSkuMappingResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="skuMap">
+                <xsd:sequence>
+                    <xsd:element name="link" type="typens:skuLink" minOccurs="0" maxOccurs="unbounded" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="skuLink">
+                <xsd:sequence>
+                    <xsd:element name="magento_sku" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                    <xsd:element name="antalis_sku" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="HICRCHQOrganizationalAcronym"><!-- HICRC_HQOrganizationalAcronym -->
+             <xsd:sequence>
+               <xsd:element name="Code" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- HICRC_HQOrganizationalAcronym::Code -->
+               <xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- HICRC_HQOrganizationalAcronym::Name -->
+               <xsd:element name="FrenchName" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- HICRC_HQOrganizationalAcronym::FrenchName -->
+             </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ICRCDelegation"><!-- ICRC_Delegation -->
+             <xsd:sequence>
+               <xsd:element name="MainSiteName" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_Delegation::MainSite_Name -->
+               <xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_Delegation::Name -->
+             </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ICRCCostCentre"><!-- ICRC_CostCentre -->
+             <xsd:sequence>
+               <xsd:element name="Code" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_CostCentre::Code -->
+               <xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_CostCentre::Name -->
+             </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ICRCObjective"><!-- ICRC_Objective -->
+            <xsd:sequence>
+             <xsd:element name="GOCode" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_Objective::GOCode -->
+             <xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1"/><!-- ICRC_Objective::Name -->
+           </xsd:sequence>
+          </xsd:complexType>
+                  
+          <!-- operation request element -->
+          <xsd:element name="radar">
+           <xsd:complexType>
+            <xsd:sequence>
+             <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+             <xsd:element name="acronym" type="typens:HICRCHQOrganizationalAcronym" minOccurs="0" maxOccurs="unbounded"/><!-- radar::acronym -->
+             <xsd:element name="delegation" type="typens:ICRCDelegation" minOccurs="0" maxOccurs="unbounded"/><!-- radar::delegation -->
+             <xsd:element name="costcenter" type="typens:ICRCCostCentre" minOccurs="0" maxOccurs="unbounded"/><!-- radar::cost_center -->
+             <xsd:element name="objective" type="typens:ICRCObjective" minOccurs="0" maxOccurs="unbounded"/><!-- radar::objective -->
+            </xsd:sequence>
+           </xsd:complexType>
+          </xsd:element>
+          <!-- operation response element -->
+          <xsd:element name="radarResponse">
+           <xsd:complexType>
+            <xsd:sequence>
+             <xsd:element name="result" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+           </xsd:complexType>
+          </xsd:element>
+
+            <xsd:element name="datastudioLogRequestParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sessionNumber" type="xsd:integer" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="status" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="message" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="datastudioLogResponseParam">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="result" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            
+          
+          <xsd:complexType name="newsletterSubscriberInfoRequestFilter">
+          <xsd:sequence>
+           <xsd:element name="subscriber_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+           <xsd:element name="email" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+           <xsd:element name="store_id" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          </xsd:sequence>
+          </xsd:complexType>
+          
+          <!-- operation request element -->
+          <xsd:element name="newsletterSubscriberInfoRequestParam">
+           <xsd:complexType>
+            <xsd:sequence>
+             <xsd:element minOccurs="1" maxOccurs="1" name="sessionId" type="xsd:string" />
+             <xsd:element minOccurs="1" maxOccurs="1" name="filter" type="typens:newsletterSubscriberInfoRequestFilter"/>
+            </xsd:sequence>
+           </xsd:complexType>
+          </xsd:element>
+
+          <!-- operation response element -->
+          <xsd:element name="newsletterSubscriberInfoResponseParam">
+           <xsd:complexType>
+            <xsd:sequence>
+             <xsd:element name="result" type="typens:newsletterSubscriberInfoResponseData" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+           </xsd:complexType>
+          </xsd:element>
+          
+          <xsd:complexType name="newsletterSubscriberInfoResponseData">
+          <xsd:sequence>
+           <xsd:element name="item" type="typens:newsletterSubscriberInfoResponseItem" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+         </xsd:complexType>
+          <xsd:complexType name="newsletterSubscriberInfoResponseItem">
+          <xsd:sequence>
+           <xsd:element name="subscriber_id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+           <xsd:element name="store_id" type="xsd:string" minOccurs="1" maxOccurs="1"/> 
+           <xsd:element name="customer_id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+           <xsd:element name="subscriber_email" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+           <xsd:element name="subscriber_status" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+           <xsd:element name="subscriber_confirm_code" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          </xsd:sequence>
+         </xsd:complexType>
+
+            <xsd:complexType name="salesOrderEntity">
+                <xsd:sequence>
+                    <xsd:element name="increment_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="parent_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="created_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="is_active" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="grand_total" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_paid" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_qty_ordered" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_online_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_offline_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_grand_total" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_paid" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_qty_ordered" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_online_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_offline_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_address_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_address_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_to_base_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_to_order_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_to_global_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_to_order_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="weight" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="remote_ip" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="status" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="state" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="applied_rule_ids" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="global_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="order_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_method" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_description" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_email" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="quote_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="is_virtual" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_group_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_note_notify" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_is_guest" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="email_sent" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="order_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_message_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_message" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_address" type="typens:salesOrderAddressEntity" minOccurs="0" />
+                    <xsd:element name="billing_address" type="typens:salesOrderAddressEntity" minOccurs="0" />
+                    <xsd:element name="items" type="typens:salesOrderItemEntityArray" minOccurs="0" />
+                    <xsd:element name="payment" type="typens:salesOrderPaymentEntity" minOccurs="0" />
+                    <xsd:element name="status_history" type="typens:salesOrderStatusHistoryEntityArray" minOccurs="0" />
+                    <xsd:element name="additional_attributes" type="typens:associativeArray" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="salesOrderListEntity">
+                <xsd:sequence>
+                    <xsd:element name="increment_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="created_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="grand_total" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_paid" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_qty_ordered" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_online_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_offline_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_grand_total" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_paid" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_qty_ordered" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_online_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_offline_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_address_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_address_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="billing_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_to_base_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_to_order_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_to_global_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_to_order_rate" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="weight" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_name" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="remote_ip" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="status" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="state" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="applied_rule_ids" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="global_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="store_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="order_currency_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_method" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_description" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_email" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="quote_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="is_virtual" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_group_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_note_notify" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_is_guest" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="email_sent" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="order_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_message_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="coupon_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="protect_code" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_discount_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_discount_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_discount_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_tax_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_tax_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_invoiced_cost" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="tax_canceled" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="tax_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="can_ship_partially" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="can_ship_partially_item" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="edit_increment" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="forced_do_shipment_with_invoice" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="payment_authorization_expiration" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="paypal_ipn_customer_notified" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="quote_address_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="adjustment_negative" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="adjustment_positive" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_adjustment_negative" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_adjustment_positive" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_subtotal_incl_tax" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_total_due" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="payment_authorization_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_discount_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="subtotal_incl_tax" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_due" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_dob" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_middlename" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_prefix" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_suffix" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_taxvat" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="discount_description" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="ext_customer_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="ext_order_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="hold_before_state" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="hold_before_status" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="original_increment_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="relation_child_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="relation_child_real_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="relation_parent_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="relation_parent_real_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="x_forwarded_for" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_note" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="total_item_count" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_gender" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="hidden_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_hidden_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_hidden_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_hidden_tax_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="hidden_tax_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_hidden_tax_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="hidden_tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_hidden_tax_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="shipping_incl_tax" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_shipping_incl_tax" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_customer_balance_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_balance_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_customer_balance_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_balance_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_customer_balance_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_balance_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_customer_balance_total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="customer_balance_total_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_cards" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_gift_cards_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_cards_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_gift_cards_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_cards_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_gift_cards_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="gift_cards_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_points_balance" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_reward_currency_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_currency_amount" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_reward_currency_amount_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_currency_amount_invoiced" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="base_reward_currency_amount_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_currency_amount_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_points_balance_refunded" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_points_balance_to_refund" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="reward_salesrule_points" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="telephone" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="postcode" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="additional_attributes" type="typens:associativeArray" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="salesOrderAddressEntity">
+                <xsd:sequence>
+                    <xsd:element name="increment_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="parent_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="created_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="is_active" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="address_type" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="prefix" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="firstname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="lastname" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="company" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="street" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="city" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="region" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="postcode" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="country_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="telephone" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="fax" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="region_id" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="address_id" type="xsd:string" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="catalogProductAttributeAddOptionRequest">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeAddOptionRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="catalogProductAttributeAddOptionResponse">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeAddOptionResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="catalogProductAttributeRemoveOptionRequest">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeRemoveOptionRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="catalogProductAttributeRemoveOptionResponse">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeRemoveOptionResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="fileUploadRequest">
+        <wsdl:part name="parameters" element="typens:fileUploadRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="fileUploadResponse">
+        <wsdl:part name="parameters" element="typens:fileUploadResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="fileGetInvoiceRequest">
+        <wsdl:part name="parameters" element="typens:fileGetInvoiceRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="fileGetInvoiceResponse">
+        <wsdl:part name="parameters" element="typens:fileGetInvoiceResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="catalogProductAttributeConfigurableInfoRequest">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeConfigurableInfoRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="catalogProductAttributeConfigurableInfoResponse">
+        <wsdl:part name="parameters" element="typens:catalogProductAttributeConfigurableInfoResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="indexerRunRequest">
+        <wsdl:part name="parameters" element="typens:indexerRunRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="indexerRunResponse">
+        <wsdl:part name="parameters" element="typens:indexerRunResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="uploadSkuMappingRequest">
+        <wsdl:part name="parameters" element="typens:uploadSkuMappingRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="uploadSkuMappingResponse">
+        <wsdl:part name="parameters" element="typens:uploadSkuMappingResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="datastudioLogRequest">
+        <wsdl:part name="parameters" element="typens:datastudioLogRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="datastudioLogResponse">
+        <wsdl:part name="parameters" element="typens:datastudioLogResponseParam" />
+    </wsdl:message>
+    <wsdl:message name="radarLoadRequest">
+        <wsdl:part name="parameters" element="typens:radar" />
+    </wsdl:message>
+    <wsdl:message name="radarLoadResponse">
+        <wsdl:part name="parameters" element="typens:radarResponse" />
+    </wsdl:message>
+    <wsdl:message name="newsletterSubscriberInfoRequest">
+        <wsdl:part name="parameters" element="typens:newsletterSubscriberInfoRequestParam" />
+    </wsdl:message>
+    <wsdl:message name="newsletterSubscriberInfoResponse">
+        <wsdl:part name="parameters" element="typens:newsletterSubscriberInfoResponseParam" />
+    </wsdl:message>
+    <wsdl:portType name="{{var wsdl.handler}}PortType">
+         <wsdl:operation name="catalogProductAttributeAddOption">
+            <wsdl:documentation>Retrieve attribute options</wsdl:documentation>
+            <wsdl:input message="typens:catalogProductAttributeAddOptionRequest" />
+            <wsdl:output message="typens:catalogProductAttributeAddOptionResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="catalogProductAttributeRemoveOption">
+            <wsdl:documentation>Retrieve attribute options</wsdl:documentation>
+            <wsdl:input message="typens:catalogProductAttributeRemoveOptionRequest" />
+            <wsdl:output message="typens:catalogProductAttributeRemoveOptionResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="fileUpload">
+            <wsdl:documentation>Upload file</wsdl:documentation>
+            <wsdl:input message="typens:fileUploadRequest" />
+            <wsdl:output message="typens:fileUploadResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="fileGetInvoice">
+            <wsdl:documentation>Upload file</wsdl:documentation>
+            <wsdl:input message="typens:fileGetInvoiceRequest" />
+            <wsdl:output message="typens:fileGetInvoiceResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="catalogProductAttributeConfigurableInfo">
+            <wsdl:documentation>Get Product Configurable Attributes</wsdl:documentation>
+            <wsdl:input message="typens:catalogProductAttributeConfigurableInfoRequest" />
+            <wsdl:output message="typens:catalogProductAttributeConfigurableInfoResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="indexerRun">
+            <wsdl:documentation>Run indexer</wsdl:documentation>
+            <wsdl:input message="typens:indexerRunRequest" />
+            <wsdl:output message="typens:indexerRunResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="uploadSkuMapping">
+            <wsdl:documentation>Upload SKU mapping</wsdl:documentation>
+            <wsdl:input message="typens:uploadSkuMappingRequest" />
+            <wsdl:output message="typens:uploadSkuMappingResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="datastudioLog">
+            <wsdl:documentation>Log for Datastudio</wsdl:documentation>
+            <wsdl:input message="typens:datastudioLogRequest" />
+            <wsdl:output message="typens:datastudioLogResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="radarLoad">
+            <wsdl:documentation>Load RADAR tables</wsdl:documentation>
+            <wsdl:input message="typens:radarLoadRequest" />
+            <wsdl:output message="typens:radarLoadResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="newsletterSubscriberInfo">
+            <wsdl:documentation>Get Newsletter Subscriber Info</wsdl:documentation>
+            <wsdl:input message="typens:newsletterSubscriberInfoRequest" />
+            <wsdl:output message="typens:newsletterSubscriberInfoResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="catalogProductAttributeAddOption">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="catalogProductAttributeRemoveOption">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="fileUpload">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="fileGetInvoice">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="catalogProductAttributeConfigurableInfo">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="indexerRun">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="uploadSkuMapping">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="datastudioLog">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="radarLoad">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="newsletterSubscriberInfo">
+            <soap:operation soapAction="" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="{{var wsdl.name}}Service">
+        <wsdl:port name="{{var wsdl.handler}}Port" binding="typens:{{var wsdl.handler}}Binding">
+            <soap:address location="{{var wsdl.url}}" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

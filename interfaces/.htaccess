@@ -1,0 +1,21 @@
+AuthUserFile magento-interfaces-users
+AuthGroupFile /dev/null
+AuthName "protected"
+AuthType Basic
+Require valid-user
+
+# htpasswd -cdb /etc/apache2/magento-interfaces-users USER PWD
+
+
+order deny,allow 
+deny from all 
+# Data-LAN
+allow from 192.168.100.0/24
+# Data
+allow from 93.2.231.0/24
+# Vrack
+allow from 172.16.0.0/12
+# Local
+allow from 127.0.0.0/8
+# Antalis
+allow from 213.193.117.196/32

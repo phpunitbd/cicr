@@ -1,0 +1,30 @@
+<?php
+$id = $this->getProduct()->getId();
+$buttonTitle = $this->__('Add to Cart');
+$buttonLink = "productAddGroupedFormQty('grouped-form-${id}', this, 'qty-${id}')";
+$addToCartUrl = $this->helper('checkout/cart')->getAddUrl($this->getProduct(), array());
+?>
+<div class="add-to-cart-price">
+  <div class="add-to-cart-price"><?php echo $this->getPriceBlockHtml() ?></div>
+</div>
+<form method="post" id="grouped-form-<?php echo $id ?>" action="<?php echo $addToCartUrl ?>" onsubmit="productAddGroupedFormQty('grouped-form-<?php echo $id ?>', $('add-to-cart-button-grouped-<?php echo $id ?>'), 'qty-<?php echo $id ?>'); return false;">
+  <div class="qty-wrapper grouped-qty">
+    <label for="qty-<?php echo $id ?>"><?php echo $this->__('Qty:') ?></label>
+    <input type="text" name="" id="qty-<?php echo $id ?>" maxlength="12" value="1" title="<?php echo $this->__('Qty') ?>" class="input-text qty validate-number" />
+  </div>
+  <?php foreach ($this->getAssociatedProducts() as $product): ?>
+    <?php if ($product->isSalable()): ?>
+      <input type="hidden" value="<?php echo (int)$product->getQty() ?>" name="qty[<?php echo $product->getId() ?>]"  id="qty-item-<?php echo $id . '-' . $product->getId() ?>" />
+      <input type="hidden" value="<?php echo (int)$product->getQty() ?>" name="def_qty[<?php echo $product->getId() ?>]" class="hidden-def-qty" id="def-qty-item-<?php echo $id . '-' . $product->getId() ?>" alt="qty-item-<?php echo $id . '-' . $product->getId() ?>" />
+    <?php endif ?>
+  <?php endforeach ?>
+  <div class="addto-cart-button-wrapper">
+    <button type="button" title="<?php echo $buttonTitle ?>" class="addto-cart-button" onclick="<?php echo $buttonLink ?>" id="add-to-cart-button-grouped-<?php echo $id ?>">
+      <img src="<?php echo $this->getSkinUrl(Mage::getStoreConfig('icrc/web/add_to_cart_image')) ?>" alt="<?php echo $buttonTitle ?>" />
+    </button>
+    <div class="please-wait" id="cart-wait-<?php echo $id ?>" style="display:none;">
+      <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Adding to cart...') ?>" title="<?php echo $this->__('Adding to cart...') ?>" class="v-middle" /> <?php echo $this->__('Adding to cart...') ?>
+    </div>
+  </div>
+</form>
+

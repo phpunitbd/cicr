@@ -1,0 +1,46 @@
+<?php
+function _getSizedThumnailUrl($_product) {
+  list ($URL, $margintop, $marginright, $marginbottom, $marginleft, $width, $height) = 
+    Mage::helper('data_icrc')->getImageRatioWithInfo($_product, 135);
+  if ($height > $width) {
+    $h = 112 / $width * 135;
+    list ($URL, $margintop, $marginright, $marginbottom, $marginleft, $width, $height) = 
+      Mage::helper('data_icrc')->getImageRatioWithInfo($_product, $h);
+  }
+  return array($width, $height, $URL);
+}
+?>
+<div class="bottom-bestsellers">
+  <div class="bottom-bestsellers-title icrc-wrapper"><div class="inner">
+    <?php echo $this->__('Best Sellers') ?>
+  </div></div>
+  <div class="bottom-bestsellers-content" id="bottom-bestsellers-content">
+    <div class="carousel-control previous_button">&nbsp;</div>
+    <div class="bottom-bestsellers-content-container">
+      <ul class="bestsellers block-product-list dyn-block dyn-block-trunc">
+<?php foreach ($this->getProductCollection() as $_product): ?>
+<?php list($_width, $_height, $_url) = _getSizedThumnailUrl($_product); ?>
+        <li class="item">
+          <div class="wrapper">
+            <div class="name">
+              <a href="<?php echo $_product->getProductUrl() ?>">
+                <span><?php echo Mage::helper('core/string')->truncate($_product->getName(), 90); ?></span>
+              </a>
+            </div>
+            <div class="image">
+              <a href="<?php echo $_product->getProductUrl() ?>">
+                <img src="<?php echo $_url ?>" alt="<?php echo htmlspecialchars($_product->getName()) ?>" title="<?php echo htmlspecialchars($_product->getName()) ?>" 
+                     width="<?php echo $_width ?>" height="<?php echo $_height ?>" class="shadow-bottom" />
+              </a>
+            </div>
+          </div>
+        </li>
+<?php endforeach ?>
+      </ul>
+    </div>
+    <div class="carousel-control next_button">&nbsp;</div>
+  </div>
+</div>
+<script type="text/javascript">
+new UI.Carousel("bottom-bestsellers-content", {container: '.bottom-bestsellers-content-container', scrollInc: 3});
+</script>

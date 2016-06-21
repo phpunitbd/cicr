@@ -1,0 +1,21 @@
+<div class="mini-login">
+  <div class="login-message"><?php echo $this->__('Log In'); ?></div>
+  <div class="login-form">
+    <form action="<?php echo Mage::helper('customer')->getLoginPostUrl() ?>" method="post" id="login-form-mini">
+      <div>
+        <div class="submit">
+          <button type="submit" class="button" title="<?php echo $this->__('Login') ?>" name="send" id="send-mini"><span>></span></button>
+        </div>
+        <input type="text" class="input-text required-entry validate-email" id="login-email" name="login[username]" /><br/>
+        <input type="password" class="input-text required-entry" id="login-password" name="login[password]" />
+      </div>
+    </form>
+    <a href="<?php echo $this->getUrl('customer/account/forgotpassword') ?>" class="login-logout">> <?php echo $this->__('Forgot your password?') ?></a><br/>
+    <a href="<?php echo Mage::helper('persistent')->getCreateAccountUrl($this->getCreateAccountUrl()) ?>" class="login-logout">> <?php echo $this->__('Create an Account') ?></a>
+  </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('login-form-mini', true);
+//]]>
+</script>

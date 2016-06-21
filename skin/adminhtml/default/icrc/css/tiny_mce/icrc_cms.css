@@ -1,0 +1,12 @@
+.accroche { font-size: 14px; color: #5a4258; font-weight: bold; line-height: 17px; }
+.content { width: 244px; margin: 20px; font-size: 13px; text-align:justify; line-height: 1.4; font-family: arial; }
+.content-small { width: 214px; margin: 20px; font-size: 13px; text-align:justify; line-height: 1.4; font-family: arial; }
+.lien-produit-slide { font-weight: bold; line-height: 18px; background-image: url('../../images/cms-title-arrow.png'); background-repeat: no-repeat; background-position: left; margin-left: -15px; padding-left: 15px; } // TODO
+
+h1 { font-size: 18px; color: #5a4258; font-weight: bold; line-height: 17px; margin-bottom: 12px; }
+h2 { font-size: 12px; color: #e47905; font-weight: bold; line-height: 18px; background-image: url('../../images/cms-title-arrow.png'); background-repeat: no-repeat; background-position: left; margin-left: -15px; padding-left: 15px; }
+p { font-size: 12px; color: #846682; font-weight: normal; line-height: 18px; }
+
+
+#msg_co_not_connected, #msg_co_connected { border: 1px dotted gray; padding: 2px; margin: 2px; }
+

@@ -1,0 +1,25 @@
+<?php /* @class Mage_Reports_Block_Product_Viewed */ ?>
+<?php $helper = Mage::helper('data_icrc') ?>
+<?php if ($_products = $this->getRecentlyViewedProducts()): $count = 0; ?>
+<div class="lastvisits">
+  <h1><span class="corner"></span><?php echo $this->__('Recently Viewed Products') ?></h1>
+  <ol class="inner">
+  <?php foreach ($_products as $_item): ?>
+    <?php $name = $this->helper('catalog/output')->productAttribute($_item, $_item->getName() , 'name'); ?>
+    <?php list ($url, $top, $right, $bottom, $left, $width, $height) = $helper->getThumbnailRatioWithInfoWidth($_item, 56) ?>
+    <li>
+      <div class="image cell">
+        <a href="<?php echo $this->getProductUrl($_item) ?>"><img src="<?php echo $url ?>" alt="image" 
+           width="<?php echo $width ?>" height="<?php echo $height ?>" /></a>
+      </div>
+      <div class="text cell">
+        <a href="<?php echo $this->getProductUrl($_item) ?>">
+          <?php echo Mage::helper('core/string')->truncate($name, 100); ?>
+        </a>
+      </div>
+    </li>
+  <?php endforeach; ?>
+  </ol>
+</div>
+<?php endif; ?>
+

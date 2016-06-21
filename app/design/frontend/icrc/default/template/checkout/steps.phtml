@@ -1,0 +1,9 @@
+<div class="checkout_steps" id="checkout_steps">
+  <?php foreach ($this->getSteps() as $id => $step): ?>
+    <div class="checkout_step step_<?php echo $step ?> <?php echo ($this->getStep() == $id) ? 'active' : 'inactive' ?>">
+      <div class="img_step_<?php echo $step ?> checkout_step_img"></div>
+      <div class="text_step_<?php echo $step ?> checkout_step_text"><?php echo $this->__($step) ?></div>
+    </div>
+  <?php endforeach ?>
+    <div class="checkout_step spacer"></div>
+</div>

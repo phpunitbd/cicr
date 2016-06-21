@@ -1,0 +1,20 @@
+<?php
+$rows = (int)$this->getRows() ? (int)$this->getRows() : 1;
+$cnt = $this->countChildren();
+$cols = ceil($cnt / $rows);
+$num = 1;
+$total = 0;
+?>
+<div id="icrc_home_bottom">
+<table class="icrc_home_bottom"><tr>
+<?php foreach ($this->getSortedChildBlocks() as $child) : ?>
+<td><?php echo $this->getChildHtml($child->getNameInLayout()); $total++; ?></td>
+<?php 
+if ($num < $cols && $total < $cnt) echo '<td class="promo-spacer">&nbsp;</td>';
+if ($num++ == $cols && $total < $cnt) {
+  $num = 1;
+  echo '</tr><tr>';
+} ?>
+<?php endforeach; ?>
+</tr></table>
+</div>

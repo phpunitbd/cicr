@@ -1,0 +1,23 @@
+<?php
+$product = $this->getProduct();
+$_def_qty = $this->getProductDefaultQty() ? $this->getProductDefaultQty() : 1;
+?>
+<?php if ($product): ?>
+  <div class="qty-wrapper">
+    <label for="qty"><?php echo $this->__('Qty:') ?></label>
+    <input type="text" name="" id="qty" maxlength="12" value="<?php echo (int)$_def_qty ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty validate-number" />
+    <label class="required"><em>*</em></label>
+    <?php foreach ($this->getAssociatedProductCollection() as $item): ?>
+      <?php if ($item->isSalable()): ?>
+        <input class="grouped-product-hidden-qty" type="hidden" value="<?php echo (int)$item->getQty() * (int)$_def_qty ?>" name="qty[<?php echo $item->getId() ?>]" id="qty-item-<?php echo $item->getId() ?>" />
+        <input type="hidden" value="<?php echo (int)$item->getQty() * (int)$_def_qty ?>" name="def_qty[<?php echo $item->getId() ?>]" class="hidden-def-qty" id="def-qty-item-<?php echo $item->getId() ?>" alt="qty-item-<?php echo $item->getId() ?>" />
+      <?php endif ?>
+    <?php endforeach ?>
+  </div>
+<?php else: // !$product ?>
+<div id="messages" style="text-align: left">
+  <ul class="messages">
+    <li class="error-msg"><?php echo $this->__('Cannot get product information') ?></li>
+  </ul>
+</div>
+<?php endif // ~$product ?>

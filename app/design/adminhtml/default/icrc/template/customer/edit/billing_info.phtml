@@ -1,0 +1,146 @@
+<table cellspacing="0" class="form-edit">
+  <tbody>
+    <tr>
+      <td class="address-list">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-customer-address-list">Customer Billing Information</h4>
+        </div>
+        <ul id="address_list">
+          <?php foreach ($this->getInfoCollection() as $billing): ?>
+            <li class="item">
+              <div class="buttons">
+                <a class="link-remove" href="<?php echo Mage::helper('adminhtml')->getUrl('*/*/deleteBillingInfo', array('info_id' => $billing->getId(), 'customer_id' => $this->getCustomerId())) ?>">Delete</a>
+              </div>
+              <address>
+                <strong class="label">Unit Name or Delegation:</strong> <?php echo $billing->getUnit() ?><br/>
+                <strong class="label">Cost Center:</strong> <?php echo $billing->getCostCenter() ?><br/>
+                <strong class="label">Objective code:</strong> <?php echo $billing->getObjectiveCode() ?><br/>
+              </address>
+            </li>
+          <?php endforeach ?>
+        </ul>
+      </td>
+      <td id="add-new-billing-info">
+        <!-- Template for adding address item to list -->
+        <div id="form-icrc-billing-info">
+          <div class="fieldset">
+            <?php echo $this->getBlockHtml('formkey')?>
+            <div class="icrc-wrapper margin-after">
+              <div>
+                <h2 class="account-subtitle">Billing Information</h2>
+              </div>
+            </div>
+            <ul class="form-list">
+              <li class="fields">
+                <div class="field">
+                  <label for="icrc-billing-info-unit" class="required"><em>*</em>Unit Name or Delegation</label>
+                  <div class="input-box">
+                    <input type="text" name="unit" id="icrc-billing-info-unit" class="input-text" />
+                    <div id="icrc-billing-info-unit-choices" class="autocomplete"></div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>&nbsp;</label>
+                  <div class="input-box">Example: <strong>CIM_COM_PROD</strong> or <strong>NAIROBI</strong></div>
+                </div>
+              </il>
+              <li class="fields">
+                <div class="field">
+                  <label for="icrc-billing-info-cc" class="required"><em>*</em>Cost Center</label>
+                  <div class="input-box">
+                    <input type="text" name="cost_center" id="icrc-billing-info-cc" class="input-text" />
+                    <div id="icrc-billing-info-cc-choices" class="autocomplete"></div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>&nbsp;</label>
+                  <div class="input-box">Example: <strong>GVA3050</strong> or <strong>NAI3240</strong></div>
+                </div>
+              </il>
+              <li class="fields">
+                <div class="field">
+                  <label for="icrc-billing-info-oc" class="required"><em>*</em>Objective code</label>
+                  <div class="input-box">
+                    <input type="text" name="objective_code" id="icrc-billing-info-oc" class="input-text" />
+                    <div id="icrc-billing-info-oc-choices" class="autocomplete"></div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>&nbsp;</label>
+                  <div class="input-box">Example: <strong>KENYNATPREACT</strong></div>
+                </div>
+              </il>
+            </ul>
+          </div>
+          <div class="buttons-set">
+            <p class="required">* Required Fields</p>
+            <button type="button" title="Save" class="button" onclick="doSaveNewbillingInfo()"><span><span>Save New Informations</span></span></button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+  function doSaveNewbillingInfo() {
+    var unit = $('icrc-billing-info-unit').value;
+    if (!ICRC.unit_delegation_validator_data[unit]) {
+      alert('The unit or delegation does not exist');
+      return ;
+    }
+    var cc = $('icrc-billing-info-cc').value;
+    if (!ICRC.cc_validator_data[cc]) {
+      alert('The cost center does not exist');
+      return ;
+    }
+    var oc = $('icrc-billing-info-oc').value;
+    if (!ICRC.oc_validator_data[oc]) {
+      alert('The objective code does not exist');
+      return ;
+    }
+    if (unit != '' && cc != '' && oc != '') {
+      var form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", "<?php echo $this->getNewUrl() ?>");
+      var params = {unit: unit, cost_center: cc, objective_code: oc, customer_id: <?php echo $this->getCustomerId() ?>};
+      $$('#form-icrc-billing-info input[name=form_key]').each(function(item) { params.form_key = item.value; });
+      for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+          form.appendChild(hiddenField);
+        }
+      }
+      document.body.appendChild(form);
+      form.submit();
+    } else {
+      alert("You must fill in Unit, Cost center, and Objective code");
+    }
+  }
+  function doForceRefreshGivenHelper(helper, element) {
+    helper.changed = false;
+    helper.hasFocus = true;
+    helper.oldElementValue = element.value;
+    helper.getUpdatedChoices();
+  }
+  var billing_unit_autocompleter = new Ajax.Autocompleter("icrc-billing-info-unit", 
+                                                          "icrc-billing-info-unit-choices", 
+                                                          "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                          {minChars: 0});
+  var billing_cc_autocompleter = new Ajax.Autocompleter("icrc-billing-info-cc", 
+                                                        "icrc-billing-info-cc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                        {minChars: 0});
+  var billing_oc_autocompleter = new Ajax.Autocompleter("icrc-billing-info-oc", 
+                                                        "icrc-billing-info-oc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                        {minChars: 0});
+  $('icrc-billing-info-unit').observe('click', function() { doForceRefreshGivenHelper(billing_unit_autocompleter, this); });
+  $('icrc-billing-info-oc').observe('click',   function() { doForceRefreshGivenHelper(billing_oc_autocompleter,   this); });
+  $('icrc-billing-info-cc').observe('click',   function() { doForceRefreshGivenHelper(billing_cc_autocompleter,   this); });
+
+//]]>
+</script>

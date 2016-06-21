@@ -1,0 +1,25 @@
+input.input-readonly { background-color: #EEE !important; }
+.dynamic-grid td input.larger-input-text { width: 180px; }
+
+.messages li .datastudio-results { font-weight: normal !important; padding-left: 10px; }
+.datastudio-results .name { min-width: 60px; }
+
+.messages li small a { text-decoration: none; }
+.content-header .a-right h3 { float: right; }
+
+#payment_form_icrc .input-box label { display: inline-block; width: 185px; }
+#payment_form_icrc .input-box select { width: 202px; }
+#payment_form_icrc .input-box textarea { width: 198px; }
+
+#tinymce h1 { font-size: 18px; color: #5a4258; font-weight: bold; line-height: 17px; margin-bottom: 12px; }
+#tinymce h2 { font-size: 12px; color: #e47905; font-weight: bold; line-height: 18px; background-image: url('../images/cms-title-arrow.png'); background-repeat: no-repeat; background-position: left; margin-left: -15px; padding-left: 15px; }
+#tinymce p { font-size: 12px; color: #846682; font-weight: normal; line-height: 18px; }
+
+/* the \0/ mark makes this working only on IE8-9 */
+.grid select:focus { width: auto\0/ !important; position:relative\0/; }​
+
+.na_panel { background-color: #e7efef !important; }
+.na_panel span { margin: auto auto; font-size: 36px; display: block; width: 15%; padding-top: 100px; color: white; text-align: center; height: 40px; }
+
+#msg_co_not_connected, #msg_co_connected { border: 1px dotted gray; padding: 2px; margin: 2px; }
+

@@ -1,0 +1,150 @@
+<?php
+
+//var_dump(get_class($this));
+//var_dump($this->getData());
+
+// Get Customer ID from adminhtml/sales_order_create_data block
+$cid = Mage::getSingleton('adminhtml/session_quote')->getCustomerId();
+$collection = $this->getRegisteredBillingInfo($cid);
+
+$quoteId = Mage::getSingleton('adminhtml/session_quote')->getQuote()->getId();
+$this->setCurrentQuote($quoteId);
+//var_dump($this->getOrderAttributes());
+//var_dump($this->getCurrentBillingInfoId());
+$iid = $this->getCurrentBillingInfoId();
+$stype = $this->getCurrentShippingType();
+
+//var_dump(Mage::getSingleton('adminhtml/session_quote')->getQuote()->getBillingAddress()->getData());
+
+?>
+<ul class="sp-methods icrc-payment-info form-list" id="payment_form_icrc">
+  <li>
+    <?php if (count($collection)): ?>
+      <div class="input-box">
+        <label for="icrc-billing-info-list">Select billing informations or enter new ones.</label>
+        <select id="icrc-billing-info-list" class="required-entry" name="payment[info_id]">
+          <?php foreach ($collection as $info): ?>
+            <option value="<?php echo $info->getId() ?>" <?php if ($iid == $info->getId()) echo 'selected="selected"' ?>><?php echo $info->showInfo() ?></option>
+          <?php endforeach ?>
+          <option value="new"<?php if ($iid === null) echo 'selected="selected"' ?>>New billing informations</option>
+        </select>
+      </div>
+      <script type="text/javascript">
+        IcrcAdminOrder._BillingInfoCollection = <?php echo $this->getRegisteredBillingInfoJSON() ?>;
+      </script>
+    <?php endif ?>
+  </li>
+  <li class="icrc-payment-auto">
+    <div class="input-box">
+      <label for="icrc-int-unit">Unit Name or Delegation<em class="required">*</em></label>
+      <input type="text" class="input-text radar-validate-unit-delegation" id="icrc-int-unit" name="payment[icrc_unit]" value="<?php echo $this->getCurrentBillingUnit() ?>" />
+      <div id="icrc-int-unit-choices" class="autocomplete"></div>
+    </div>
+  </li>
+  <li class="icrc-payment-auto">
+    <div class="input-box">
+      <label for="icrc-int-cc">Cost Center<em class="required">*</em></label>
+      <input type="text" class="input-text radar-validate-cost-center" id="icrc-int-cc" name="payment[icrc_cost_center]" value="<?php echo $this->getCurrentCostCenter() ?>" />
+      <div id="icrc-int-cc-choices" class="autocomplete"></div>
+    </div>
+  </li>
+  <li class="icrc-payment-auto">
+    <div class="input-box">
+      <label for="icrc-int-oc">Objective code<em class="required">*</em></label>
+      <input type="text" class="input-text radar-validate-objective-code" id="icrc-int-oc" name="payment[icrc_objective_code]" value="<?php echo $this->getCurrentObjectiveCode() ?>" />
+      <div id="icrc-int-oc-choices" class="autocomplete"></div>
+    </div>
+  </li>
+  <li>
+    <div class="input-box">
+      <label for="icrc-int-com">Comments & Justifications</label>
+      <textarea id="icrc-int-com" name="payment[icrc_com]" class="input-text"><?php echo $this->getCurrentBillingCom() ?></textarea>
+    </div>
+  </li>
+  <li>
+    <div class="input-box">
+      <label for="validation-email">Validation Email Address<em class="required">*</em></label>
+      <input type="text" class="input-text required-entry validate-email" id="validation-email" name="validation[icrc_email]" value="<?php echo $this->getCurrentValidationEmail() ?>" />
+    </div>
+  </li>
+  <li style="margin-left: -20px">Shipping</li>
+  <li>
+    <div class="input-box">
+      <label for="icrc-shipping-type">Destination Type<em class="required">*</em></label>
+      <select class="required-entry" id="icrc-shipping-type" name="shipping[icrc_type]">
+        <option value=""></option>
+        <option value="unit" <?php if ($stype == 'unit') echo 'selected="selected"' ?>>Unit</option>
+        <option value="delegation" <?php if ($stype == 'delegation') echo 'selected="selected"' ?>>Delegation</option>
+      </select>
+    </div>
+  </li>
+  <li>
+    <div class="input-box">
+      <label for="icrc-shipping-unit-deleg">Unit Name or Delegation<em class="required">*</em></label>
+      <input type="text" class="input-text radar-validate-unit-delegation-id unit-delegation-selector-id-icrc-shipping-type" id="icrc-shipping-unit-deleg" name="shipping[icrc_unit]" value="<?php echo $this->getCurrentShippingUnit() ?>" />
+      <div id="icrc-shipping-unit-deleg-choices" class="autocomplete"></div>
+    </div>
+  </li>
+  <li>
+    <div class="input-box">
+      <label for="shipping-icrc-int-com">Comments &amp; Justifications</label>
+      <textarea id="shipping-icrc-int-com" name="shipping[icrc_com]" class="input-text" autocomplete="off"><?php echo $this->getCurrentShippingCom() ?></textarea>
+    </div>
+  </li>
+</ul>
+<script type="text/javascript">
+//<![CDATA[
+  IcrcAdminOrder.hideBillingAddress();
+
+  order.icrcPaymentInfoCallback = function() {
+    console.log('order.icrcPaymentInfoCallback');
+    if ($('icrc-billing-info-list'))
+      $('icrc-billing-info-list').observe("change", IcrcAdminOrder.changeBillingInfoSelection);
+    if ($('icrc-shipping-type'))
+      $('icrc-shipping-type').observe("change", IcrcAdminOrder.onShippingTypeChange);
+    IcrcAdminOrder.changeBillingInfoVisibility();
+    IcrcAdminOrder.onShippingTypeChange();
+  }
+  order.icrcPaymentInfoInit = function() {
+    console.log('order.icrcPaymentInfoInit');
+    order.icrcPaymentInfoCallback();
+    $('order-billing_method').callback = 'icrcPaymentInfoCallback';
+    IcrcAdminOrder.removeRequiredEntryFromBilling();
+    //IcrcAdminOrder.fillInBillingInfo();
+  }
+  order.icrcInitAutocomplete = function() {
+    console.log('order.icrcInitAutocomplete');
+    var me = this;
+    me.billing_unit_autocompleter = new Ajax.Autocompleter("icrc-int-unit", 
+                                                            "icrc-int-unit-choices", 
+                                                            "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                            {afterUpdateElement: IcrcAdminOrder.afterAutocomplete});
+    me.billing_cc_autocompleter = new Ajax.Autocompleter("icrc-int-cc", 
+                                                          "icrc-int-cc-choices", 
+                                                          "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                          {afterUpdateElement: IcrcAdminOrder.afterAutocomplete});
+    me.billing_oc_autocompleter = new Ajax.Autocompleter("icrc-int-oc", 
+                                                          "icrc-int-oc-choices", 
+                                                          "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                          {afterUpdateElement: IcrcAdminOrder.afterAutocomplete});
+    me.shipping_unit_autocompleter = new Ajax.Autocompleter("icrc-shipping-unit-deleg", 
+                                                            "icrc-shipping-unit-deleg-choices", 
+                                                            "<?php echo Mage::getUrl('icrc/radar/shipping'); ?>", 
+                                                            {afterUpdateElement: IcrcAdminOrder.afterAutocomplete});
+    $('icrc-int-unit').observe('click', function() { doForceRefreshGivenHelper(me.billing_unit_autocompleter, this); });
+    $('icrc-int-oc').observe('click',   function() { doForceRefreshGivenHelper(me.billing_oc_autocompleter,   this); });
+    $('icrc-int-cc').observe('click',   function() { doForceRefreshGivenHelper(me.billing_cc_autocompleter,   this); });
+    $('icrc-shipping-unit-deleg').observe('click', function() { doForceRefreshGivenHelper(me.shipping_unit_autocompleter, this); });
+    var _type = $('icrc-shipping-type').value;
+    me.shipping_unit_autocompleter.options.defaultParams = 'type=' + _type;
+  }
+  IcrcAdminOrder.icrcPaymentInfoCheckInit.defer();
+  
+  function doForceRefreshGivenHelper(helper, element) {
+    helper.changed = false;
+    helper.hasFocus = true;
+    helper.oldElementValue = element.value;
+    helper.getUpdatedChoices();
+  }
+//]]>
+</script>

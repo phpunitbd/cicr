@@ -1,0 +1,106 @@
+<?php $_code = $this->getMethodCode() ?>
+<?php Mage::helper('data_icrc/internal')->getRadarValidatorData() ?>
+<ul class="sp-methods icrc-payment-info form-list" id="payment_form_<?php echo $_code ?>">
+  <li class="icrc-internal wide">
+    <?php if (count($this->getRegisteredBillingInfo())): ?>
+      <label for="icrc-billing-info-list">Select billing informations from your address book or enter new ones.</label>
+      <div class="input-box">
+        <select id="icrc-billing-info-list" class="required-entry" name="payment[id]">
+          <?php foreach ($this->getRegisteredBillingInfo() as $info): ?>
+            <option value="<?php echo $info->getId() ?>"><?php echo $info->showInfo() ?></option>
+          <?php endforeach ?>
+            <option value="new">New billing informations</option>
+        </select>
+      </div>
+      <script type="text/javascript">
+        var _BillingInfoCollection = <?php echo $this->getRegisteredBillingInfoJSON() ?>;
+        function changeBillingInfoSelection() {
+          var sel = $('icrc-billing-info-list');
+          if (sel.value == 'new') {
+            $('icrc-int-unit').value = '';
+            $('icrc-int-cc').value = '';
+            $('icrc-int-oc').value = '';
+            $('icrc-int-save').checked = true;
+            $$('#payment_form_<?php echo $_code ?> .icrc-payment-auto').invoke('show');
+          }
+          else {
+            $('icrc-int-unit').value = _BillingInfoCollection[sel.value].unit;
+            $('icrc-int-cc').value = _BillingInfoCollection[sel.value].cost_center;
+            $('icrc-int-oc').value = _BillingInfoCollection[sel.value].objective_code;
+            $('icrc-int-save').checked = false;
+            $$('#payment_form_<?php echo $_code ?> .icrc-payment-auto').invoke('hide');
+          }
+        }
+        document.observe("dom:loaded", function (){
+          $('icrc-billing-info-list').observe("change", changeBillingInfoSelection);
+          changeBillingInfoSelection();
+        });
+      </script>
+    <?php endif ?>
+  </li>
+  <li class="icrc-internal icrc-payment-auto">
+    <div class="field addr-autocomplete">
+      <label for="icrc-int-unit" class="required">Unit Name or Delegation<em>*</em></label>
+      <div class="input-box">
+        <input type="text" class="input-text required-entry radar-validate-unit-delegation" id="icrc-int-unit" name="payment[icrc_unit]" value="" />
+        <div id="icrc-int-unit-choices" class="autocomplete"></div>
+      </div>
+    </div>
+    <div class="field shipping-unit-deleg-tip"><?php echo $this->__('Example: <b>%s</b> or <b>%s</b>', 'CIM_COM_PROD', 'NAIROBI') ?></div>    
+  </li>
+  <li class="icrc-internal icrc-payment-auto">
+    <div class="field addr-autocomplete">
+      <label for="icrc-int-cc" class="required">Cost Center<em>*</em></label>
+      <div class="input-box">
+        <input type="text" class="input-text required-entry radar-validate-cost-center" id="icrc-int-cc" name="payment[icrc_cost_center]" value="" />
+        <div id="icrc-int-cc-choices" class="autocomplete"></div>
+      </div>
+    </div>
+    <div class="field shipping-unit-deleg-tip"><?php echo $this->__('Example: <b>%s</b> or <b>%s</b>', 'GVA3050', 'NAI3240') ?></div>
+  </li>
+  <li class="icrc-internal icrc-payment-auto">
+    <div class="field addr-autocomplete">
+      <label for="icrc-int-oc" class="required">Objective code<em>*</em></label>
+      <div class="input-box">
+        <input type="text" class="input-text required-entry radar-validate-objective-code" id="icrc-int-oc" name="payment[icrc_objective_code]" value="" />
+        <div id="icrc-int-oc-choices" class="autocomplete"></div>
+      </div>
+    </div>
+    <div class="field shipping-unit-deleg-tip"><?php echo $this->__('Example: <b>%s</b>', 'RNAIAIGPREACT0') ?></div>    
+  </li>
+  <li class="icrc-internal icrc-payment-auto control">
+    <input type="checkbox" name="payment[save_in_address_book]" title="Save in address book" id="icrc-int-save" class="checkbox">
+    <label for="icrc-int-save">Save in address book</label>
+  </li>
+  <li class="icrc-internal">
+    <div class="field">
+      <label for="icrc-int-com">Comments</label>
+      <div class="input-box">
+        <textarea id="icrc-int-com" name="payment[icrc_com]" class="input-text" maxlength="4090"><?php echo $this->getComments() ?></textarea>
+      </div>
+    </div>
+  </li>
+</ul>
+<script type="text/javascript">
+  function doForceRefreshGivenHelper(helper, element) {
+    helper.changed = false;
+    helper.hasFocus = true;
+    helper.oldElementValue = element.value;
+    helper.getUpdatedChoices();
+  }
+  var billing_unit_autocompleter = new Ajax.Autocompleter("icrc-int-unit", 
+                                                          "icrc-int-unit-choices", 
+                                                          "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                          {minChars: 0});
+  var billing_cc_autocompleter = new Ajax.Autocompleter("icrc-int-cc", 
+                                                        "icrc-int-cc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                        {minChars: 0});
+  var billing_oc_autocompleter = new Ajax.Autocompleter("icrc-int-oc", 
+                                                        "icrc-int-oc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/billing'); ?>", 
+                                                        {minChars: 0});
+  $('icrc-int-unit').observe('click', function() { doForceRefreshGivenHelper(billing_unit_autocompleter, this); });
+  $('icrc-int-oc').observe('click',   function() { doForceRefreshGivenHelper(billing_oc_autocompleter,   this); });
+  $('icrc-int-cc').observe('click',   function() { doForceRefreshGivenHelper(billing_cc_autocompleter,   this); });
+</script>

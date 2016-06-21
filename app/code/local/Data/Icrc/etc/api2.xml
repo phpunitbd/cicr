@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<config>
+    <api2>
+        <resource_groups>
+            <data_icrc translate="title" module="Data_Icrc">
+                <title>Product change API</title>
+                <sort_order>10</sort_order>
+            </data_icrc>
+        </resource_groups>
+        <resources>
+            <data_icrc translate="title" module="Data_Icrc">
+                <group>data_icrc</group>
+                <model>Data_Icrc_Model_Api2_Productchanged</model>
+                <title>Product change Rest API</title>
+                <sort_order>10</sort_order>
+                <privileges>
+                    <guest>
+                        <retrieve>1</retrieve>
+                    </guest>
+                    <admin>
+                        <retrieve>1</retrieve>
+                    </admin>
+                    <customer>
+                        <retrieve>1</retrieve>
+                    </customer>       
+                </privileges>
+                <attributes module="Data_Icrc">
+                    <entity_id>Product ID</entity_id>
+                    <type_id>Product Type</type_id>
+                    <attribute_set_id>Attribute Set</attribute_set_id>
+                    <name>name</name>
+                    <store_id>StoreId</store_id>
+                    <sku>sku</sku>
+                    <category_ids>category_ids</category_ids>
+                    <url_key>url_key</url_key>
+                    <weight>weight</weight>
+                    <price>price</price>
+                    <description>Description</description>
+                    <stock_data>Inventory Data</stock_data>
+                    <image_url>Default Image</image_url>
+                    <is_saleable>Salability Status</is_saleable>
+                    <total_reviews_count>Total Reviews Count</total_reviews_count>
+                    <url>Product URL</url>
+                    <buy_now_url>Buy Now URL</buy_now_url>
+                    <has_custom_options>Has Custom Options</has_custom_options>
+                    <is_in_stock>Stock Status</is_in_stock>
+                    <regular_price_with_tax>Regular Price With Tax</regular_price_with_tax>
+                    <regular_price_without_tax>Regular Price Without Tax</regular_price_without_tax>
+                    <final_price_with_tax>Final Price With Tax</final_price_with_tax>
+                    <final_price_without_tax>Final Price Without Tax</final_price_without_tax>
+                    <use_config_gift_message_available>Use Config Settings for Allow Gift Message</use_config_gift_message_available>
+                    <use_config_gift_wrapping_available>Use Config Settings for Allow Gift Wrapping</use_config_gift_wrapping_available>
+                    <url_key_create_redirect>Create Permanent Redirect for old URL</url_key_create_redirect>
+                    <allow_open_amount>allow open amount</allow_open_amount>
+                    <giftcard_amounts>giftcard amounts</giftcard_amounts>
+                    <open_amount_min>open amount min</open_amount_min>
+                    <open_amount_max>open amount max</open_amount_max>
+                    <image>image</image>
+                    <is_recurring>is recurring</is_recurring>
+                    <gallery>gallery</gallery>
+                    <media_gallery>media gallery</media_gallery>
+                    <price_view>price view</price_view>
+                    <small_image>small  image</small_image>
+                    <image_url>image url</image_url>
+                    <is_saleable>is saleable</is_saleable>
+                    <total_reviews_count>total reviews count</total_reviews_count>
+                    <url>Url </url>
+                    <buy_now_url>buy now url</buy_now_url>
+                    <has_custom_options>has custom options</has_custom_options>
+                    <is_in_stock>is in stock</is_in_stock>
+                    <regular_price_with_tax>regular price with tax</regular_price_with_tax>
+                    <regular_price_without_tax>regular price without tax </regular_price_without_tax>
+                    <final_price_with_tax> final price with tax</final_price_with_tax>
+                    <final_price_without_tax>final price without tax</final_price_without_tax>
+                    <recurring_profile>recurring profile</recurring_profile>
+                    <thumbnail>thumbnail</thumbnail>
+                    <url_key_create_redirect>url key create redirect</url_key_create_redirect>
+                    <configurable_product_options>configurable_product_options</configurable_product_options>
+                    <related_products>related_products</related_products>
+                    <crosssell_products>crosssell_products</crosssell_products>
+                    <grouped_associated_products>grouped_associated_products</grouped_associated_products>
+                    <icrc_attribute_group>icrc_attribute_group</icrc_attribute_group>
+                    <isbn>isbn</isbn>
+                    <origlang>origlang</origlang>
+                    <lang>lang</lang>
+                    <contentdate>contentdate</contentdate>
+                    <theme>theme</theme>
+                    <storloc>storloc</storloc>
+                    <external_catalog>external_catalog</external_catalog>
+                    <additional_comments>additional_comments</additional_comments>
+                    <production_cost>production_cost</production_cost>
+                    <target_audience>target_audience</target_audience>
+                    <store_info>store_info</store_info>
+                    <dimensions>dimensions</dimensions>
+                    <languages_available>languages_available</languages_available>
+                    <product_type>product_type</product_type>
+                    <author>author</author>
+                    <dimention_height>dimention_height</dimention_height>
+                    <dimention_width>dimention_width</dimention_width>
+                    <dimention_depth>dimention_depth</dimention_depth>
+                    <pdf>pdf</pdf>
+                    <page_number>page_number</page_number>
+                    <copyright>copyright</copyright>
+                    <people>people</people>
+                    <places>places</places>
+                    <biblio>biblio</biblio>
+                    <orphan>orphan</orphan>
+                    <download_link>download_link</download_link>
+                    <streaming_link>streaming_link</streaming_link>
+                    <length>length</length>
+                    <film_format>film_format</film_format>
+                    <film_definition>film_definition</film_definition>
+                    <film_system>film_system</film_system>
+                    <add_material>add_material</add_material>
+                    <trailer_link>trailer_link</trailer_link>
+                    <color>color</color>
+                    <brand_name>brand_name</brand_name>
+                    <currency>currency</currency>
+                </attributes>
+                <routes>
+                    <route_collection>
+                        <route>/productchanged/:date</route>
+                        <action_type>collection</action_type>
+                    </route_collection>
+                </routes>
+                <versions>1</versions>
+            </data_icrc>
+        </resources>
+    </api2>
+</config>
+

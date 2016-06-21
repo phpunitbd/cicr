@@ -1,0 +1,38 @@
+<layout version="0.1.0">
+  <default>
+    <reference name="head">
+      <action method="addCss"><script>css/icrc.css</script></action>
+      <action method="addItem"><type>skin_js</type><name>js/tiny_mce_setup.js</name></action>
+      <action method="addItem"><type>skin_js</type><name>js/icrc_admin.js</name></action>
+      <action method="addSpecificJs">
+        <file helper="data_icrc/admin/radarValidatorLoad" />
+      </action>
+    </reference>
+  </default>
+
+  <adminhtml_icrc_datastudio_stacktrace>
+    <reference name="content">
+      <block type="core/template" template="datastudio/stacktrace.phtml" name="trace" />
+    </reference>
+  </adminhtml_icrc_datastudio_stacktrace>
+  
+  <adminhtml_sales_order_create_index>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>js/internal_sales.js</name></action>
+    </reference>
+  </adminhtml_sales_order_create_index>
+  
+  <adminhtml_customer_edit>
+    <reference name="customer_edit_tabs">
+        <action method="addTabAfter">
+          <name>billing_info</name>
+          <block>data_icrc/adminhtml_customer_edit_tab_billinginformations</block>
+          <after>addresses</after>
+        </action>
+    </reference>
+    <reference name="head">
+      <action method="addItem"><type>skin_js</type><name>js/internal_addressbook.js</name></action>
+    </reference>
+  </adminhtml_customer_edit>
+</layout>
+

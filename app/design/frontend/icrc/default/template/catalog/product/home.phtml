@@ -1,0 +1,121 @@
+<?php
+$helper_product = $this->helper('catalog/product');
+$helper_data = $this->helper('data_icrc/product');
+$helper_string = $this->helper('core/string');
+
+// Clean CMS artifacts
+$product = $this->getProduct();
+$product = str_replace('<span>', '', $product);
+$product = str_replace('</span>', '', $product);
+$skus = explode(",", $product);
+
+// Get parameters
+$size = $this->getSize();
+$title_max_len = $this->getMaxTitleLen();
+$title_data = $this->getTitleData();
+$title_width = $this->getTitleWidth();
+$title_style = $this->getTitleStyle();
+$force_wrapper_size = $this->getWrapperSize();
+if (empty($size)) $size = 75;
+if (empty($title_max_len)) $title_max_len = 70;
+if (empty($title_data)) $title_data = 'name';
+if (empty($title_width)) $title_width = 150;
+
+// Some parameters may be in array form
+if (is_string($size) && strpos($size, ',') !== false) {
+  $_size = explode(',', $size);
+}
+if (is_string($title_width) && strpos($title_width, ',') !== false) {
+  $_title_width = explode(',', $title_width);
+}
+
+$add_to_cart = $this->getSkinUrl(Mage::getStoreConfig('icrc/web/add_to_big_cart_image'));
+
+// compute maximum width
+if (isset($_title_max_len)) {
+  $total_size = 0;
+  if (count($_title_max_len) < count($skus)) {
+    $last = end($_title_max_len);
+    reset($_title_max_len);
+    $_title_max_len = array_pad($_title_max_len, count($skus), $last);
+    foreach ($_title_max_len as $_len)
+      $total_size += $_len + 10;
+  }
+}
+else
+  $total_size = ($title_width + 10) * count($skus);
+
+if (empty($force_wrapper_size))
+  echo "<div class=\"home-products-wrapper\">";
+else {
+  if ($force_wrapper_size == "big") $force_wrapper_size = 405;
+  elseif (preg_match('/^\+([0-9]+)$/', $force_wrapper_size, $matches)) $force_wrapper_size = 375 + $matches[1];
+  else $force_wrapper_size = (int)$force_wrapper_size;
+  echo "<div class=\"home-products-wrapper\" style=\"width: ${force_wrapper_size}px\">";
+}
+echo "<div class=\"home-products-list\" style=\"width: {$total_size}px\">";
+
+foreach($skus as $id => $sku)
+{
+  // Extract current value from array-backed parameters, if any
+  if (isset($_size)) {
+    if (array_key_exists($id, $_size)) $size = $_size[$id];
+    else { $size = end($_size); reset($_size); }
+  }
+  if (isset($_title_max_len)) {
+    if (array_key_exists($id, $_title_max_len)) $title_max_len = $_title_max_len[$id];
+    else { $title_max_len = end($_title_max_len); reset($_title_max_len); }
+  }
+
+  // Compute product
+	$product = Mage::getModel('catalog/product');
+	$productId = $product->getIdBySku($sku);
+	if ($productId > 0) {
+	  $product->load($productId);
+	  $price = $product->getTierPrice(1);
+	  if (is_array($price)) { $price = array_shift($price); }
+	  
+	  $image = Mage::helper('catalog/image')->init($product, 'thumbnail'); //thumbnail,image et small_image
+	  $originalWidth = $image->getOriginalWidth();
+	  $originalHeight = $image->getOriginalHeigh();
+	  if ($originalWidth >= $originalHeight) {
+	  	$width = $size;
+	  	$height = $size * $originalHeight / $originalWidth;
+	  }
+	  else {
+	  	$height = $size;
+	  	$width = $size * $originalWidth / $originalHeight;
+	  }
+	  $priceparts = explode(".", $price);
+	  $currencySymbol = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); 
+	  $imageurl = (string)$image->resize($width, $height);
+    $title_full = $product->getData($title_data);
+    $title = $helper_string->truncate($title_full, $title_max_len);
+    $product_url = $helper_product->getProductUrl($product);
+
+    // Print product
+?>
+<div class="home-product">
+  <div class="home-product-image-title">
+    <div>
+      <a href="<?php echo $product_url ?>"><img class="product-home-img shadow-bottom" src="<?php echo $imageurl ?>" alt="<?php echo htmlspecialchars($title_full) ?>"/></a>
+    </div>
+    <div style="width: <?php echo $title_width ?>px">
+      <span class="product-home-name <?php if (!empty($title_style)) echo $title_style ?>"><?php echo htmlspecialchars($title) ?></span>
+    </div>
+  </div>
+  <div class="home-product-price">
+    <?php echo $helper_data->getPriceBlockHtml($product) ?>
+  </div>
+  <div class="home-product-button">
+    <a style="text-decoration: none;color: black;a:visited{text-decoration: none;color: black;}" 
+       href="<?php echo $product_url ?>"><img src="<?php echo $add_to_cart ?>" class="add-to-cart-image-center"
+       title="<?php echo $this->__('Order') ?>" alt="<?php echo $this->__('Order') ?>" /></a>
+  </div>
+</div>
+<?php
+ 	}
+}
+
+?>
+</div></div>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <menu>
+    <data_icrc translate="title" module="data_icrc">
+      <title>ICRC</title>
+      <sort_order>350</sort_order>
+      <children>
+        <datastudio translate="title" module="data_icrc">
+          <title>Datastudio</title>
+          <action>*/icrc_datastudio</action>
+        </datastudio>
+      </children>
+    </data_icrc>
+  </menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+	        <data_icrc translate="title" module="data_icrc">
+	          <title>ICRC</title>
+	          <sort_order>350</sort_order>
+	          <children>
+	            <datastudio translate="title" module="data_icrc">
+		            <title>Datastudio</title>
+	            </datastudio>
+	          </children>
+	        </data_icrc>
+          <system>
+            <children>
+              <config>
+                <children>
+                  <icrc translate="title">
+                    <title>ICRC</title>
+                  </icrc>
+                  <icrc_super_admin translate="title">
+                    <title>ICRC Advanced Administration</title>
+                  </icrc_super_admin>
+                </children>
+              </config>
+            </children>
+          </system>
+       </children>
+     </admin>
+    </resources>
+  </acl>
+</config>
+

@@ -1,0 +1,15 @@
+<?php
+  $publirefs = array();
+  $t = new Varien_Object(); $publirefs[] = $t->setName('Medical')->setUrl('publication.html')->setImage('images/Medicale-78x60.png');
+  $t = new Varien_Object(); $publirefs[] = $t->setName('Law')->setUrl('publication.html')->setImage('images/Juridique-78x60.png');
+  $t = new Varien_Object(); $publirefs[] = $t->setName('Humanitarian')->setUrl('publication.html')->setImage('images/Humanitaire-78x60.png');
+  $t = new Varien_Object(); $publirefs[] = $t->setName('Academic')->setUrl('publication.html')->setImage('images/Academique-78x60.png');
+?>
+<div class="bottom-publiref">
+  <div class="bottom-publiref-title icrc-wrapper"><div class="inner">
+    <?php echo $this->__('Professional Audience') ?>
+  </div></div>
+  <div class="bottom-publiref-content" id="bottom-bestsellers-content">
+    <?php echo $this->getChildHtml('cms_block_ref_pub'); ?>
+  </div>
+</div>

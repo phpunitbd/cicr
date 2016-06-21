@@ -1,0 +1,14 @@
+<ul class="links category">
+<?php
+$helper = Mage::helper('catalog/category');
+$i = 0;
+$_categories = $helper->getStoreCategories();
+foreach ($_categories as $_category):
+  $id = $_category->getId();
+  $url = Mage::getModel("catalog/category")->load($id)->getUrl();
+  $class = ($i++ == 0) ? 'class="first"' : '';
+  if ($i == count($_categories)) $class = ($i == 1) ? 'class="first last"' : 'class="last"';
+?>
+<li <?php echo $class; ?>><a href="<?php echo $url ?>"><?php echo $_category->getName() ?></a></li>
+<?php endforeach ?>
+</ul>

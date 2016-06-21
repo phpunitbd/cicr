@@ -1,0 +1,48 @@
+<?php
+$_product = $this->getProduct();
+$_pid = $_product->getId();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+$data_helper_product = $this->helper('data_icrc/product');
+$ebook = $data_helper_product->isEBook($_product);
+?>
+<?php if ($_product->isSaleable() && count($_attributes)): ?>
+<form id="configurable_config_<?php echo $_pid ?>" action="#">
+  <dl>
+  <?php foreach($_attributes as $_attribute): ?>
+    <?php $_attrId = $_attribute->getAttributeId(); ?>
+    <?php $options = $this->getOptions($_attribute); ?>
+    <dd<?php if ($_attribute->decoratedIsLast){?> class="last"<?php }?>>
+      <script type="text/javascript">
+        var config_<?php echo $_attrId . '_' . $_pid ?> = <?php echo $this->getJsonConfig() ?>;
+      </script>
+      <div class="input-box">
+        <select name="super_attribute[<?php echo $_attrId ?>]" id="attribute<?php echo $_attrId . '_' . $_pid ?>" 
+                class="required-entry super-attribute-select validate-select">
+            <option value=""><?php echo $data_helper_product->getAttributeLabel($_attribute) ?></option>
+          <?php foreach ($options["attribute"]["options"] as $opt): ?>
+            <option value="<?php echo $opt['id'] ?>" <?php 
+              if (array_key_exists('defaultValues', $options) && $options['defaultValues'] == $opt['id']) echo 'default'; 
+              if (count($options["attribute"]["options"]) == 1) echo 'selected'; 
+            ?>><?php echo $opt['label'] ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+    </dd>
+  <?php endforeach; ?>
+  </dl>
+</form>
+<?php
+  if ($ebook) {
+    $pdfURL = $this->getUrl('icrc/pdf/view/');
+    $pdfFile = addslashes($_product->getPdf());
+    $productName = $data_helper_product->fullQuoteEscape($_product->getName());
+    $getIdFn = "ICRC.getCurrentlySelectedProductIdFromConfig(config_${_attrId}_${_pid}, $('attribute${_attrId}_${_pid}').value, ${_attrId})";
+    $this->setAddToCartAction("ICRC.downloadPdf('$pdfURL', ${getIdFn}, $('attribute${_attrId}_${_pid}'), '${pdfFile}', '${productName}')");
+  }
+  else {
+    $addToCartUrl = $this->helper('checkout/cart')->getAddUrl($_product, array());
+    $this->setAddToCartAction("addConfigurableToCartJs('$addToCartUrl', 'configurable_config_${_pid}', 'qty_${_pid}', this)");
+  }
+?>
+<?php endif ?>
+

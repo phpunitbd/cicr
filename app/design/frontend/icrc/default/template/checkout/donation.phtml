@@ -1,0 +1,27 @@
+<?php $_first = true; ?>
+<?php if ($this->getDonations()): ?>
+  <div class="donations-wrapper">
+    <div class="donations-block">
+      <div class="donation-img donation-img-<?php echo Mage::app()->getStore()->getName() ?>">
+        <div class="image">&nbsp;</div>
+        <div class="text">
+          <strong><?php echo $this->__('Donate Online') ?></strong><br/>
+          <?php echo $this->__('It\'s possible now!') ?>
+        </div>
+      </div>
+      <div class="donations-list">
+        <ol>
+          <?php foreach ($this->getDonations() as $_item): ?>
+            <li>
+              <span class="text"><?php echo $_first ? '<strong>' . $this->__('Donate') . '</strong>' : $this->__('or'); $_first = false; ?></span>
+            </li>
+            <li>
+              <a class="icrc-price" href="<?php echo $_item->getUrl() ?>"><?php echo $_item->getPrice() ?></a>
+            </li>
+          <?php endforeach; ?>
+        </ol>
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+<?php endif ?>

@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Saferpay Ecommerce Magento Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Saferpay Business to
+ * newer versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @copyright Copyright (c) 2011 Openstream Internet Solutions (http://www.openstream.ch)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+	<modules>
+		<Saferpay_Ecommerce>
+			<version>0.0.1</version>
+		</Saferpay_Ecommerce>
+	</modules>
+	<global>
+		<blocks>
+			<saferpay>
+				<class>Saferpay_Ecommerce_Block</class>
+			</saferpay>
+		</blocks>
+		<models>
+			<saferpay>
+				<class>Saferpay_Ecommerce_Model</class>
+			</saferpay>
+		</models>
+		<helpers>
+			<saferpay>
+				<class>Saferpay_Ecommerce_Helper</class>
+			</saferpay>
+		</helpers>
+		<sales>
+			<order>
+				<statuses>
+					<authorized translate="label">
+						<label>Authorized Payment</label>
+					</authorized>
+				</statuses>
+				<states>
+				   <authorized translate="label">
+						<label>Authorized Payment</label>
+						<statuses>
+							<authorized default="1"/>
+						</statuses>
+						<visible_on_front>1</visible_on_front>						
+				   </authorized>
+				</states>
+			</order>
+		</sales>		
+		<resources>
+			<ecommerce_setup>
+				<setup>
+					<module>Saferpay_Ecommerce</module>
+				</setup>
+				<connection>
+                    <use>core_setup</use>
+                </connection>
+			</ecommerce_setup>
+		</resources>
+	</global>
+	<frontend>
+		<routers>
+			<saferpay>
+				<use>standard</use>
+				<args>
+					<module>Saferpay_Ecommerce</module>
+					<frontName>saferpay</frontName>
+				</args>
+			</saferpay>
+		</routers>
+        <translate>
+            <modules>
+                <Saferpay_Ecommerce>
+                    <files>
+                        <default>Saferpay_Ecommerce.csv</default>
+                    </files>
+                </Saferpay_Ecommerce>
+            </modules>
+        </translate>
+	</frontend>
+	<adminhtml>
+        <translate>
+            <modules>
+                <Saferpay_Ecommerce>
+                    <files>
+                        <default>Saferpay_Ecommerce.csv</default>
+                    </files>
+                </Saferpay_Ecommerce>
+            </modules>
+        </translate>
+	</adminhtml>
+	<default>
+		<payment>
+			<!-- GiroPay, eps, iDeal, Postfinance, PayPal, Maestro Online und ELV Online -->
+			<!-- Saferpay Provider Table: http://www.saferpay.com/help/ProviderTable.asp -->
+			<saferpay_giropay translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay GiroPay</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/giropay</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_giropay>
+			<saferpay_eps translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay EPS</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/eps</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_eps>
+			<saferpay_ideal translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay iDeal</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/ideal</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_ideal>
+			<saferpay_paypal translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay Paypal</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/paypal</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_paypal>
+			<saferpay_maestro translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay Maestro Online</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/maestro</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_maestro>
+			<saferpay_creditcard translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay Credit Card</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/creditcard</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_creditcard>
+			<saferpay_elv translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay ELV Online</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/elv</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_elv>
+			<saferpay_postfinance translate="title" module="saferpay">
+				<active>0</active>
+				<title>Saferpay Postfinance</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/postfinance</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_postfinance>
+			<saferpay_billpayrechnungskauf translate="title" module="saferpay">
+				<active>0</active>
+				<title>Billpay Rechnungskauf</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/billpayrechnungskauf</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_billpayrechnungskauf>
+			<saferpay_billpaylastschrift translate="title" module="saferpay">
+				<active>0</active>
+				<title>Billpay Lastschrift</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/billpaylastschrift</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_billpaylastschrift>
+			<saferpay_mpass translate="title" module="saferpay">
+				<active>0</active>
+				<title>mpass</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/mpass</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_mpass>
+			<saferpay_clickandbuy translate="title" module="saferpay">
+				<active>0</active>
+				<title>ClickandBuy</title>
+				<allowspecific>0</allowspecific>
+				<provider_id></provider_id>
+				<model>saferpay/clickandbuy</model>
+				<payment_action>authorize_capture</payment_action>
+			</saferpay_clickandbuy>
+		</payment>
+		<saferpay>
+			<settings>
+				<saferpay_username></saferpay_username>
+				<!-- DO NOT set default password as some setup needs NO password, and no passord in the back office means using default password -->
+				<saferpay_password></saferpay_password>
+				<saferpay_account_id>42842-17734137</saferpay_account_id>
+				<!-- Card registration URL and MPI URL generation: -->
+				<payinit_base_url>https://www.saferpay.com/hosting/CreatePayInit.asp</payinit_base_url>
+				<!-- Capture and cancel -->
+				<paycomplete_base_url>https://www.saferpay.com/hosting/PayCompleteV2.asp</paycomplete_base_url>
+				<!-- Verify Data Signature -->
+				<verifysig_base_url>https://www.saferpay.com/hosting/VerifyPayConfirm.asp</verifysig_base_url>
+				<!-- See https://www.saferpay.com/vt/xml/language.xml -->
+				<language_ids_url>https://www.saferpay.com/vt/xml/language.xml</language_ids_url>
+				<default_lang_id>1033</default_lang_id><!-- 1033 = english -->
+			</settings>
+		</saferpay>
+	</default>
+</config>

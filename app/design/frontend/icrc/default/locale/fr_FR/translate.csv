@@ -1,0 +1,197 @@
+"%s suscribed to newsletter","%s est inscrit à la newsletter"
+"%s unsuscribed from newsletter","%s est désinscrit de la newsletter"
+":"," :"
+": "," : "
+%s%d<span class="sup">%d</span>,%d<span class="sup">%d %s</span>
+ - title: "%s", - titre : "%s"
+ - sku: "%s", - référence : "%s"
+"- Language of demand: %s","- Langue demandée : %s"
+- Name of exhibition: %s,- Titre de l'exposition : %s
+"- Name of product: %s","- Nom du produit : %s"
+- Reference: %s,- Référence : %s
+- Type of event: ,- Type d'événement : 
+- Duration of exhibition: ,- Durée de l'exposition : 
+- Organization name: ,- Nom de l'organisation : 
+"%s: %s","%s : %s"
+"Best Sellers","Les produits les + vendus"
+%d item,%d produit
+%d items,%d produits
+%d item(s) (subject to availability),%d article(s) (sous reserve de disponibilité)
+%s Item(s),%s article(s)
+%d item(s); Total: ,%s article(s) ; Total : 
+%s order(s) cannot be validated,%s commande(s) n'ont pas pu être validée(s)
+%s order(s) have been validated.,%s commande(s) ont été validée(s)
+%s was added to your shopping cart.,L'article '%s' a été ajouté à votre panier.
+<span>icrc.</span>org,<span>cicr.</span>org
+Add to Cart,Ajouter au panier
+Adding to cart...,Ajout au panier...
+Additional Informations,Informations complémentaires
+"Address not suscribed to newsletter","Cette adresse n'est pas inscrite à la newletter"
+"alert me when back in stock","alertez-moi quand le produit sera en stock"
+Author,Auteur
+Author: %s,Auteur : %s
+Available Languages,Langues disponibles
+Back,Retour
+Best Sellers,Nos meilleures ventes
+"By placing your order, you agree to the Terms & Conditions","Pour poursuivre la commande, vous devez accepter les conditions générales de vente"
+"By placing your order, you agree to the <a href=""%s"">Terms & Conditions</a>","Pour poursuivre la commande, vous devez accepter les <a href=""%s"">conditions générales de vente</a>"
+Cannot add the item to shopping cart.,Impossible d'ajouter l'article
+Cannot add the item to shopping cart: not available,
+Cannot buy gifts from internal store,Impossible d'acheter des gadgets depuis le site interne
+Cannot find WSDL file,Impossible de trouver le fichier WSDL
+Cart,Panier
+cart,panier
+Change,Modifier
+checkout,commander
+Choose Language Name,Choisir la langue
+Click here,Cliquez ici
+"Click to make the demand","Cliquez pour en faire la demande"
+Collection price is computed from the available products. Unavailable products may be purchased seperately later.,Le prix de la collection est calculé sur les produits en stock. Les produits en rupture de stock peuvent être commandés séparément à une date ultérieure.
+Contact,Contactez-nous
+Customer Service,Service client
+Customer Services,Service client
+Customer Type,Type de client
+Date of release:,Date de parution :
+Date of release: %s,Date de parution : %s
+"Delete this alert","Supprimer cette alerte"
+Dimensions:,Dimensions :
+Dimensions: %s,Dimensions : %s
+Discount: ,J'économise 
+Discount,J'économise
+Donate,Faites un don
+Donate Online,Don en ligne
+Donation,Don
+"Download the free PDF Versions","Télécharger les versions PDF gratuites"
+"Download the free PDF Versions (%s)","Télécharger les versions PDF gratuites (%s)"
+e-Book,e-Book
+Economic,&Eacute;conomique
+Economic with Return receipt,&Eacute;conomique avec accusé de réception
+Edit Your Cart,&Eacute;diter votre panier
+Enter your Email,Saisissez votre email
+Example: <b>%s</b>,Exemple : <b>%s</b>
+Exhibition,Exposition
+File not found,Fichier introuvable
+Film,Film
+Forgot your password?,Mot de passe oublié ?
+Full Description: ,&nbsp;
+Free,Gratuit
+Frequently bought associated products,Les clients ayant acheté cet article ont également acheté
+Get file,Télécharger le fichier
+Get shipping price,Calculer les frais d'expédition
+Getting shipping pices...,Calcul des frais d'expédition
+Gift,Article promotionnel
+Home,Accueil
+I whould like to order the following exhibition: ,Je voudrais commander l'exposition suivante : 
+ICRC Datastudio,Datastudio CICR
+ICRC Reference:,Référence CICR :
+ICRC Reference: %s,Référence CICR : %s
+ISBN:,ISBN :
+ISBN: %s,ISBN : %s
+icrc.org,cicr.org
+In stock,En stock
+Included products in collection: ,Produits inclus dans la collection : 
+Invalid form data.,Données de formulaire invalides
+Invalid form data: param name not found.,Données de formulaire invalides : nom de paramètre non trouvé
+Invalid form data: param value not found.,Données de formulaire invalides : valeur de paramètre non trouvée
+Invalid form data: project name not found.,Données de formulaire invalides : projet non trouvé
+It's possible now!,C'est maintenant possible !
+Language Name:,Langue :
+Language Name: %s,Langue : %s
+Language: %s,Langue : %s
+Learn more,En savoir +
+Legal Notices,Conditions générales de vente
+Login,Se connecter
+Modify,Modifier
+Ms.,Mlle.
+Mr.,M.
+Mrs.,Mme.
+My Orders,Mes commandes
+Newsletter,Newsletter
+Newsletter Subscription,Abonnement à la newsletter
+Next,Suivant
+No item,0 articles
+OR,OU
+ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER,LE PRIX TOTAL SERA AFFICHÉ AVANT LA VALIDATION DE LA COMMANDE
+Only pdf file can be uploaded by this api.,Seuls les fichiers PDF peuvent êtres envoyés par cette API
+Order,Commander
+Order #,Numéro de commande
+"Other versions available on demand:","Autres versions disponibles sur demande :"
+Out of stock,Rupture de stock
+"out of stock","rupture de stock"
+"Please enter a valid email address. For example johndoe@domain.com.","Please enter a valid email address. For example johndoe@icrc.org."
+Please type the letters below,Veuillez entrer le code ci-dessous
+Page:,Page : 
+Params,Paramètres
+payment,paiement
+Payment Security,Paiement sécurisé
+Pending,En cours de traitement
+Pending payment,Paiement interrompu
+Place Order,Valider ma commande
+Publication,Publication
+Previous,Précédent
+Price,Prix
+Pricing Policy,Politique des prix
+Prioritaire,Prioritaire
+Prioritaire with Return receipt,Prioritaire avec accusé de réception
+Processing order,En cours de traitement
+Product %s not found.,Produit %s introuvable
+Professional Audience,Pour les spécialistes
+Project to run,Projet à exécuter
+Qty,Qté
+Qty:,Qté : 
+Qty: %d,Qté : %d
+Recent Import,Imports récents
+Recent Orders,Dernières commandes
+Recently Viewed Products,Derniers produits vus
+Recommended Products,Produits associés
+Reference Publications,Publications de référence
+Register,S'abonner
+Register !,Abonnez-vous !
+"Register now to become a <span class=""icrc"">Red Cross</span> customer","Enregistrez-vous maintenant pour devenir un client de la <span class=""icrc"">Croix-Rouge</span>"
+"Register with us for future convenience:","Vous êtes un nouveau client ? Créer votre compte !"
+"Register now to become an ICRC customer","Enregistrez-vous dès maintenant pour devenir client de l'E-boutique CICR"
+Return Receipt,A/R
+review,récapitulatif
+Run project,Lancer le projet
+See,Voir
+See the Video,Visionner la vidéo
+See all %d items,Voir les %d produits
+Share,Partager
+"Ship to:","Destinataire :"
+Shipping,Conditions & Délais de livraison
+"Sold to:","Client :"
+Sort by,Nos thématiques
+Tax,T.V.A.
+The file content is not valid base64 data.,Le fichier n'est pas correctement encodé en base64
+The file content is not valid pdf data.,Le fichier n'est pas un PDF
+The ICRC is committed to keeping your information secure and strictly confidential.,Le CICR s'engage à sécuriser vos informations et à les garder strictement confidentielles.
+The order(s) cannot be validated,Les commandes ne peuvent pas êtres validées
+The upload file is not fully specified.,Le fichier à charger n'est pas défini
+The video cannot be played.,Impossible d'afficher la vidéo
+This is a required field.,Champs obligatoires.
+To Validate,En cours de validation
+Type of product: ,Type d'article :
+Unregister,Se désabonner
+Validate Order,Valider ma commande
+Validated,Validée
+View cart,Voir mon panier
+"Hello, %s!","Bonjour %s,"
+Welcome<br/>%s %s,Bienvenue<br/>%s %s
+Welcome<br/>%s,Bienvenue<br/>%s
+Welcome,Bienvenue
+"You are already registered on this alert","Vous êtes déjà inscrit à cette alerte"
+You are here,Vous êtes ici
+You have <span class="underline">%d items</span> in your cart,
+You will be redirected to our secure payment page when you place the order.,Vous serez redirigé sur notre site partenaire de paiement sécurisé à la validation de la commande.
+Your project ran successfully.,Votre projet s'est exécuté avec succès
+Your search "%s" returns no results.,Votre recherche "%s" n'a donné aucun résultat.
+Zip/Postal Code,
+[Learn more],En savoir plus...
+in stock,en stock
+per page,par page
+click on a topic,choisissez un thème
+Medical,Médecine
+Law,Juridique
+Humanitarian,Humanitaire
+Academic,Académique
+Language:, Langue :

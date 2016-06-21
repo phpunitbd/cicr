@@ -1,0 +1,66 @@
+<?php Mage::helper('data_icrc/internal')->getRadarValidatorData() ?>
+<li class="fields">
+  <div class="field">
+    <label for="shipping:destination_type" class="required"><em>*</em><?php echo $this->__('Select destination') ?></label>
+    <div class="input-box">
+      <select id="shipping:destination_type" name="<?php echo $this->getTypeName() ?>" title="<?php echo $this->__('Select destination') ?>" class="validate-select">
+        <option value=""></option>
+        <option value="unit" <?php if($this->getTypeValue() == 'unit') echo 'selected="selected"'; ?>><?php echo $this->__('Headquarter Unit') ?></option>
+        <option value="delegation" <?php if($this->getTypeValue() == 'delegation') echo 'selected="selected"'; ?>><?php echo $this->__('Delegation') ?></option>
+      </select>
+    </div>
+  </div>
+</li>
+<li id="unit-deleg-container" style="display: none">
+  <div class="field addr-autocomplete">
+    <label for="shipping-unit-deleg" class="required shipping-unit-deleg-hq"><em>*</em>Unit name</label>
+    <label for="shipping-unit-deleg" class="required shipping-unit-deleg-deleg"><em>*</em>Delegation name</label>
+    <div class="input-box">
+      <input type="text" class="input-text required-entry radar-validate-unit-delegation-id unit-delegation-selector-id-shipping:destination_type" id="shipping-unit-deleg"
+             name="<?php echo $this->getUnitName() ?>" value="<?php echo $this->getUnitValue() ?>" />
+      <div id="shipping-unit-deleg-choices" class="autocomplete"></div>
+    </div>
+  </div>
+  <div class="field shipping-unit-deleg-hq shipping-unit-deleg-tip"><?php echo $this->__('Example: <b>%s</b>', 'CIM_COM_PROD') ?></div>
+  <div class="field shipping-unit-deleg-deleg shipping-unit-deleg-tip"><?php echo $this->__('Example: <b>%s</b>', 'NAIROBI') ?></div>
+</li>
+<script type="text/javascript">
+//<![CDATA[
+//
+    function doRefreshInternalShipping(evt) {
+      if ($('shipping:destination_type').value == '') {
+        $('unit-deleg-container').hide();
+        $$('.address-details').each(function(i) { i.hide(); });
+      } else {
+        $('unit-deleg-container').show();
+        shipping_autocompleter.options.defaultParams = 'type=' + $('shipping:destination_type').value;
+        if ($('shipping:destination_type').value == 'unit') {
+          $$('.shipping-unit-deleg-hq').each(function(i) { i.show(); });
+          $$('.shipping-unit-deleg-deleg').each(function(i) { i.hide(); });
+          $$('.address-details').each(function(i) { i.hide(); });
+        }
+        else {
+          $$('.shipping-unit-deleg-deleg').each(function(i) { i.show(); });
+          $$('.shipping-unit-deleg-hq').each(function(i) { i.hide(); });
+          $$('.address-details').each(function(i) { i.show(); });
+        }
+      }
+    }
+    $('shipping:destination_type').observe('change', doRefreshInternalShipping);
+    document.observe("dom:loaded", doRefreshInternalShipping);
+    function doForceRefreshShippingHelper() {
+      shipping_autocompleter.changed = false;
+      shipping_autocompleter.hasFocus = true;
+      shipping_autocompleter.oldElementValue = this.value;
+      shipping_autocompleter.getUpdatedChoices();
+    }
+    $('shipping-unit-deleg').observe('click', doForceRefreshShippingHelper);
+    var shipping_autocompleter = new Ajax.Autocompleter("shipping-unit-deleg", 
+                                                        "shipping-unit-deleg-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/shipping'); ?>", 
+                                                        {minChars: 0});
+//]]>
+</script>
+<?php if ($this->getWithShippingMethod()): ?>
+  <input type="hidden" value="<?php echo Data_Icrc_Model_Carrier_IcrcInternal::AUTO ?>" name="shipping_method" />
+<?php endif ?>

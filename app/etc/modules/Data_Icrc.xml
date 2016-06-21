@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+     <modules>
+        <Data_Icrc>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Data_Icrc>
+     </modules>
+</config>

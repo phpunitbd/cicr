@@ -1,0 +1,978 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Saferpay Ecommerce Magento Payment Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Saferpay Business to
+ * newer versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @copyright Copyright (c) 2011 Openstream Internet Solutions (http://www.openstream.ch)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+	<sections>
+		<saferpay translate="label" module="saferpay">
+			<label>Saferpay</label>
+			<tab>sales</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>980</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>0</show_in_store>
+			<groups>
+				<settings>
+					<label>Saferpay Settings</label>
+					<sort_order>10</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<saferpay_account_id translate="label comment">
+							<label>Account-ID</label>
+							<comment>Determine which Saferpay account the transactions will be made through. The merchant is sent a Saferpay Account ID after signing a contract with Saferpay. Test transactions can be made with the Account ID: 99867-94913159</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</saferpay_account_id>
+						<saferpay_password translate="label comment">
+							<label>Hosting Password</label>
+							<comment>Is only needed for the Saferpay test account (the password for this is: XAjc3Kna) and for accounts with a Saferpay Business contract. For accounts with an E-Commerce contract, please leave this field empty.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</saferpay_password>
+						<http_client_adapter translate="label comment">
+							<comment>Determine whether the SSL file access occurs using the PHP function file or curl. The functions must be activated in the local PHP environment. For questions, please contact your system administrator.</comment>
+							<label>SSL Access Method</label>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_http_client</source_model>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</http_client_adapter>
+						<payinit_base_url translate="label comment">
+							<label>PayInit URL</label>
+							<comment>URL for establishing the payment link. Only change this value if requested to do so by Saferpay. The default value is: https://www.saferpay.com/hosting/CreatePayInit.asp</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payinit_base_url>
+						<paycomplete_base_url translate="label comment">
+							<label>PayComplete URL</label>
+							<comment>URL for booking the transaction: Only change this value if requested to do so by Saferpay. The default value is: https://www.saferpay.com/hosting/PayCompleteV2.asp</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</paycomplete_base_url>
+						<verifysig_base_url translate="label comment">
+							<comment>URL for verification of the authorization reply. Only change this value if requested to do so by Saferpay. The default value is: https://www.saferpay.com/hosting/VerifyPayConfirm.asp</comment>
+							<label>VerifySig URL</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>80</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</verifysig_base_url>
+						<vtconfig translate="label comment">
+							<label>VTCONFIG</label>
+							<comment>The name of a configuration set up in Saferpay Backoffice can be entered here. These configuration settings will then be used. For example, configurations enable the integration of a merchant logo on the payment page.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>90</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</vtconfig>						
+					</fields>
+				</settings>
+			</groups>
+		</saferpay>
+		<payment>
+			<groups>
+				<saferpay_giropay translate="label" module="saferpay">
+					<label>Giropay (via Saferpay E-Commerce)</label>
+					<sort_order>30</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label comment">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_giropay>
+				<saferpay_eps translate="label" module="saferpay">
+					<label>EPS (via Saferpay E-Commerce)</label>
+					<sort_order>31</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_eps>
+				<saferpay_ideal translate="label" module="saferpay">
+					<label>iDeal (via Saferpay E-Commerce)</label>
+					<sort_order>32</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_ideal>
+				<saferpay_paypal translate="label" module="saferpay">
+					<label>PayPal (via Saferpay E-Commerce)</label>
+					<sort_order>33</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_paypal>
+				<saferpay_maestro translate="label" module="saferpay">
+					<label>Maestro (via Saferpay E-Commerce)</label>
+					<sort_order>34</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_maestro>
+				<saferpay_creditcard translate="label" module="saferpay">
+					<label>Credit Cards (via Saferpay E-Commerce)</label>
+					<sort_order>34</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_creditcard>				
+				<saferpay_elv translate="label" module="saferpay">
+					<label>ELV (via Saferpay E-Commerce)</label>
+					<sort_order>35</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_elv>
+				<saferpay_postfinance translate="label" module="saferpay">
+					<label>Postfinance (via Saferpay E-Commerce)</label>
+					<sort_order>36</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_postfinance>
+				<saferpay_billpayrechnungskauf translate="label" module="saferpay">
+					<label>Billpay Rechnungskauf (via Saferpay E-Commerce)</label>
+					<sort_order>36</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_billpayrechnungskauf>
+				<saferpay_billpaylastschrift translate="label" module="saferpay">
+					<label>Billpay Lastschrift (via Saferpay E-Commerce)</label>
+					<sort_order>36</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_billpaylastschrift>
+				<saferpay_mpass translate="label" module="saferpay">
+					<label>mpass (via Saferpay E-Commerce)</label>
+					<sort_order>36</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_mpass>
+				<saferpay_clickandbuy translate="label" module="saferpay">
+					<label>ClickandBuy (via Saferpay E-Commerce)</label>
+					<sort_order>36</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<active translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</active>
+						<title translate="label">
+							<label>Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>
+						<provider_id translate="label">
+							<label>Provider ID</label>
+							<comment>This is the option of not displaying all activated payment methods on the payment page. If provider ID’s of one or more payment methods are entered here (separated with a comma) only the corresponding methods will be displayed on the payment page. If no entry is made, then all payment means are displayed. If you have questions regarding the provider ID's for the payment methods activated for your account, please send an email with your account ID at integration@saferpay.com.</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</provider_id>
+						<allowspecific translate="label">
+							<label>Payment from Applicable Countries</label>
+							<frontend_type>allowspecific</frontend_type>
+							<sort_order>40</sort_order>
+							<source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</allowspecific>
+						<specificcountry translate="label">
+							<label>Payment from Specific Countries</label>
+							<frontend_type>multiselect</frontend_type>
+							<sort_order>50</sort_order>
+							<source_model>adminhtml/system_config_source_country</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+							<can_be_empty>1</can_be_empty>
+						</specificcountry>
+						<payment_action translate="label comment">
+							<label>Payment Action</label>
+							<comment>Determine whether the transactions shall be automatically booked if the authorization is successful. The booking can generally also subsequently be made manually using Saferpay Backoffice.</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>saferpay/system_config_source_payment_action</source_model>
+							<sort_order>55</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</payment_action>						
+						<sort_order translate="label">
+							<label>Sort Order</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sort_order>
+					</fields>
+				</saferpay_clickandbuy>
+			</groups>
+		</payment>
+	</sections>
+</config>

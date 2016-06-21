@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ldml>
+  <localeDisplayNames>
+    <territories>
+      <territory type="SS">South Sudan</territory>
+      <territory type="XZ">Kosovo (UN Interim Administration)</territory>
+    </territories>
+  </localeDisplayNames>
+</ldml>

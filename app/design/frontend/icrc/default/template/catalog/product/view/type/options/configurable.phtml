@@ -1,0 +1,73 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php
+$_product    = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+$data_helper_product = $this->helper('data_icrc/product');
+?>
+<?php if ($data_helper_product->isSaleable($_product) && count($_attributes)):?>
+	<?php // un seul attribut de configuration pour le cicr donc on fait le raccourci pour le parametrage de choose text ?>
+	<?php $attributelabel = " an Option..."; ?>
+    <?php foreach($_attributes as $_attribute): ?>
+		  <?php $attributelabel = $data_helper_product->getAttributeLabel($_attribute); ?>
+      <label class="required"><em>*</em><?php //echo $_attribute->getLabel() ?></label>
+      <span class="input-box">
+        <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+          <option><?php echo $this->__('Choose an Option...') ?></option>
+        </select>
+      </span>
+    <?php endforeach; ?>
+    <script type="text/javascript">
+		  var spPreConfig = <?php echo $this->getJsonConfig() ?>;
+		  spPreConfig.chooseText="<?php echo $this->__($attributelabel) ?>";
+      var spConfig = new Product.Config(spPreConfig);
+      if (spConfig.config.attributes[<?php echo $_attribute->getAttributeId() ?>].options.length == 1) {
+        document.getElementById('attribute<?php echo $_attribute->getAttributeId() ?>').value = 
+          spConfig.config.attributes[<?php echo $_attribute->getAttributeId() ?>].options[0].id;
+      }
+      // Override formatPrice to keep ICRC formatting
+      Product.OptionsPrice.prototype.icrcPriceRE = new RegExp('([0-9]+)([\.,][0-9+].*)');
+      Product.OptionsPrice.prototype.formatPrice = function(price) {
+        var p = formatCurrency(price, this.priceFormat);
+        try {
+          n = p.replace(this.icrcPriceRE, '$1<span class="sup">$2</span>');
+          return n;
+        } catch (e) {}
+        return p;
+      }
+      function getCurrentlySelectedProductId() {
+        var option = $('attribute<?php echo $_attribute->getAttributeId() ?>').value;
+        var opts = spPreConfig.attributes[<?php echo $_attribute->getAttributeId() ?>].options;
+        for (var i = 0; i < opts.length; ++i) {
+          if (opts[i].id == option)
+            return opts[i].products[0];
+        }
+        return -1;
+      }
+    </script>
+<?php endif;?>

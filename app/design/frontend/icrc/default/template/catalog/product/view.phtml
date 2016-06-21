@@ -1,0 +1,242 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+$_helper = $this->helper('catalog/output');
+$helperdata = $this->helper('data_icrc');
+$helperdataproduct = $this->helper('data_icrc/product');
+$_product = $this->getProduct();
+$ebook = $helperdataproduct->isEBook($_product);
+$_attributes_to_show = array('author');
+$ebookLink = $helperdataproduct->getEbook($_product->getSku());
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+  <div class="image-buy <?php if ($ebook) echo 'product-ebook' ?>">
+    <?php echo $helperdata->getImageRatioWithFixedWidthHtml($_product, 185, false) ?>
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>
+      <?php if($_product->isGrouped()): ?>onsubmit="productAddGroupedFormQty('product_addtocart_form', $('add-to-cart-def-button'), 'qty'); return false;"<?php endif ?>>
+        <?php if ($helperdataproduct->isSaleable($_product)): ?>
+            <?php echo $this->getChildHtml('addtocart') ?>
+        <?php endif ?>
+    </form>
+    <div class="product-options-details">
+        <?php if ($_product->getDimensions()): ?>
+            <?php echo $_product->getDimensions() ?><br />
+        <?php endif; ?>
+        <?php if(!$helperdataproduct->isEBook($_product)): ?>
+            <?php if($langToSale = $helperdataproduct->getOptionsConfigurable($_product)): ?>
+                <div class="lang-to-sales">
+                    <?php foreach($langToSale as $lang): ?>
+                        <div class="lang">
+                            <span class="name-lang">
+                                <?php
+                                if(!$helperdataproduct->isFilm($_product)) {
+                                    echo $lang->getAttributeText('lang');
+                                } else {
+                                    echo $lang->getAttributeText('film_system');
+                                }
+                                ?>
+                            </span>
+                            <?php if($lang->getContentdate()    ): ?>
+                                <span class="year-lang">(<?php echo substr($lang->getContentdate(), 0, 4); ?>)</span>
+                            <?php endif; ?>
+                            <?php if($lang->getIsSalable()): ?>
+                                <span class="lang-in-stock"><?php echo floatval($lang->getStockItem()->getQty())." ".$this->__('in stock'); ?></span>
+                            <?php else : ?>
+                                <span class="lang-out-stock"><?php echo $this->__('out of stock'); if(Mage::getSingleton("customer/session")->isLoggedIn()): ?>: <?php endif; ?></span>
+                                <?php if(Mage::getSingleton("customer/session")->isLoggedIn()):
+                                    ?>
+                                    <a href="javascript:void(0);" onclick="productalert('<?php echo Mage::getUrl('icrc/productalertajax/add', array('product_id' => $lang->getId())); ?>')" title="<?php echo $this->__('alert me when back in stock'); ?>"><?php echo $this->__('alert me when back in stock'); ?></a>
+                                    <div id="popin-alert"></div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php if($helperdataproduct->isPublication($_product) && $helperdataproduct->getLangAvailable($_product) && is_array($helperdataproduct->getLangAvailable($_product))): ?>
+            <div class="lang-available">
+                <p><?php echo $this->__('Other versions available on demand:'); ?></p>
+                <?php  foreach($helperdataproduct->getLangAvailable($_product) as $languagesAvailable) : ?>
+                    <div class="lang">
+                        <a title="<?php echo $this->__('Click to make the demand'); ?>" href="javascript:void(0);" onclick="orderLanguage('<?php echo Mage::getUrl('icrc/otherlanguage/order', array('product_id' => $_product->getId(), 'lang' => $languagesAvailable)); ?>')"><?php echo $languagesAvailable; ?></a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+  </div>
+  <div class="product-details" id="product-view-details">
+        <div class="product-name">
+            <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?><span><?php echo $this->__('- ref. %s', $_product->getSku()); ?></span></h1>
+            <?php if ($helperdataproduct->isFilm($_product) && $_product->getAttributeText('languages_available')): ?>
+                <div class="film-langs"><?php echo $helperdataproduct->getLanguagesAvailable($_product) ?></div>
+            <?php endif; ?>
+        </div>
+        <?php if($_product->getAuthor()): ?>
+            <table class="product-attributes">
+                <tr><?php // using table because of IE7 non-understanding of display: table-cell ?>
+                    <td class="attributes">
+                        <?php if ($_product->getAuthor()): ?>
+                            <p><?php echo $this->__('Author: %s', $_product->getAuthor()) ?></p>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            </table>
+        <?php endif; ?>
+        <?php if ($_product->getStreamingLink()): ?>
+            <div class="link-media">
+              <a href="javascript:ICRC.productView.getStreaming('<?php echo $_product->getSku() ?>')">
+                <div class="product-streaming-button">
+                  <?php echo $this->__('See the Video') ?>
+                  <img src="<?php echo $this->getSkinUrl('images/see-video.png') ?>" alt="<?php echo $this->__('See the Video') ?>" />
+                </div>
+              </a><div id="streaming-div"></div>
+            </div>
+        <?php endif ?>
+        <?php if ($_pdf = $helperdataproduct->havePdfProduct($ebookLink)): ?>
+            <div class="link-media link-pdf">
+                <a class="product-pdf-button" href="<?php echo $_pdf ?>">
+                    <?php
+                    $langs = $helperdataproduct->getOptionsConfigurableOfEbook($_product);
+                    $nbLang = count($langs);
+                    if($nbLang > 0) :
+                        $htmlLang = "";
+                        $i = 0;
+                        foreach($langs as $lang) {
+                            $i++;
+                            $htmlLang .= $lang->getAttributeText('lang');
+                            if($nbLang != $i) {
+                               $htmlLang .= "/"; 
+                            }
+                        }
+                        ?>
+                        <span><?php echo $this->__('Download the free PDF Versions (%s)', $htmlLang) ?></span>
+                    <?php endif; ?>
+                </a>
+            </div>
+        <?php endif ?>
+    <div class="full-description">
+      <?php echo $_product->getDescription() ?>
+    </div>
+    <?php echo $this->getChildHtml('product_share') ?>
+  </div>
+</div>
+<?php if ($_product->isGrouped()): ?>
+  <div class="grouped-product-details">
+    <h2><?php echo $this->__('Included products in collection: ') ?></h2>
+    <p><?php echo $this->__('Collection price is computed from the available products. Unavailable products may be purchased seperately later.') ?></p>
+    <ul>
+      <?php foreach ($_product->getGroupedLinkCollection() as $item): ?>
+        <?php $_prd = Mage::getModel('catalog/product')->load($item->getLinkedProductId()) ?>
+        <?php $_striped_name = $this->stripTags($_prd->getName(), null, true) ?>
+        <?php $_isDonation = $helperdataproduct->isDonation($_prd); ?>
+        <li class="item">
+          <table>
+                <tr>
+                    <td width="100px">
+                        <div class="product-category"><?php echo $this->__($helperdataproduct->getAttributeSetFrontLabel($_prd)) ?></div>
+                        <div class="dyn-block">
+                            <?php if (!$_isDonation): ?>
+                                <?php if($_prd->isSaleable()): ?>
+                                  <p class="availability in-stock"><span><?php echo $this->__('In stock') ?></span></p>
+                                <?php else: ?>
+                                  <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                                <?php endif; ?>
+                        <?php endif; ?>
+                        </div>
+                    </td>
+                    <td width="611" class="details">
+                        <?php if (!$_isDonation): ?><a title="<?php echo $_striped_name ?>" href="<?php echo $helperdataproduct->getProductUrl($_prd) ?>"><?php endif; ?><?php echo $_helper->productAttribute($_prd, $_prd->getName(), 'name') ?><?php if (!$_isDonation): ?></a><?php endif; ?>
+                    </td>
+                </tr>
+            </table>
+        </li>
+      <?php endforeach ?>
+    </ul>
+  </div>
+<?php endif ?>
+<script type="text/javascript">
+//<![CDATA[
+var productAddToCartForm = new VarienForm('product_addtocart_form');
+productAddToCartForm.submit = function(button, url) {
+    if (this.validator.validate()) {
+        var form = this.form;
+        var oldUrl = form.action;
+
+        if (url) {
+           form.action = url;
+        }
+        var e = null;
+        try {
+            this.form.submit();
+        } catch (e) {
+        }
+        this.form.action = oldUrl;
+        if (e) {
+            throw e;
+        }
+
+        if (button && button != 'undefined') {
+            button.disabled = true;
+        }
+    }
+}.bind(productAddToCartForm);
+
+productAddToCartForm.submitLight = function(button, url){
+    if(this.validator) {
+        var nv = Validation.methods;
+        delete Validation.methods['required-entry'];
+        delete Validation.methods['validate-one-required'];
+        delete Validation.methods['validate-one-required-by-name'];
+        // Remove custom datetime validators
+        for (var methodName in Validation.methods) {
+            if (methodName.match(/^validate-datetime-.*/i)) {
+                delete Validation.methods[methodName];
+            }
+        }
+
+        if (this.validator.validate()) {
+            if (url) {
+                this.form.action = url;
+            }
+            this.form.submit();
+        }
+        Object.extend(Validation.methods, nv);
+    }
+}.bind(productAddToCartForm);
+    //]]>
+</script>

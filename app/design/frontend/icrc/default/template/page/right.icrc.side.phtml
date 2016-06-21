@@ -1,0 +1,22 @@
+<?php
+$helper = Mage::helper('data_icrc');
+function _get_cms_title_and_url($cms) {
+  $_cms = Mage::getModel('cms/page')->setStoreId(Mage::app()->getStore()->getId())->load($cms);
+//var_dump($_cms);
+  if ($_cms->getId())
+    return new Varien_Object(array('title' => $_cms->getTitle(), 'url' => Mage::helper('cms/page')->getPageUrl($_cms->getId())));
+  return null;
+}
+
+?>
+<div class="icrc-side-bar" id="ircr-right-side-bar">
+    <div class="links">
+    <h1><span class="corner"></span><?php echo $this->__('Customer Services') ?></h1>
+    <div class="inner">
+      <?php echo $this->getChildHtml('customer_service_side') ?>
+    </div>
+  </div>
+  <?php echo $this->getChildHtml('last_visited') ?>
+  <?php echo $this->getChildHtml('languages_available') ?>
+</div>
+

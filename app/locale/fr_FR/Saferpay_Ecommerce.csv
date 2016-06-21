@@ -1,0 +1,8 @@
+"An error occured while processing the payment failure, please contact the store owner for assistance.", "Une erreur est survenue pendant le traitement de l'échec du paiement, veuillez contacter le service client"
+"An error occured while processing the payment, please contact the store owner for assistance.", "Une erreur est survenue pendant le traitement du paiement, veuillez contacter le service client"
+Authorize Only (Reservation),Autorisation uniquement (réservation)
+Authorize and Capture (Booking),Autorisation et débit
+Can not create an invoice.,Impossible de créer la facture.
+PayComplete call failed. Result: "%s",L'appel à PayComplete a échoué. Résultat : "%s"
+Payment aborted with status "%s",Paiement interrompu avec le statut "%s"
+"Signature invalid, possible manipulation detected! Validation Result: "%s"", "Signature invalide, manipulation possible détectée ! Résultat de la validation : "%s""

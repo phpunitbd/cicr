@@ -1,0 +1,84 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<form action="<?php echo Mage::getUrl('*/*/formPost') ?>" method="post" id="form-validate">
+  <div class="fieldset">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="icrc-wrapper margin-after">
+      <div>
+        <h2 class="account-subtitle">Billing Information</h2>
+      </div>
+    </div>
+    <ul class="form-list">
+      <li class="fields">
+        <div class="field addr-autocomplete">
+          <label for="unit" class="required"><em>*</em>Unit Name or Delegation</label>
+          <div class="input-box">
+            <input type="text" name="unit" id="unit" class="input-text required-entry radar-validate-unit-delegation" />
+            <div id="unit-choices" class="autocomplete"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div class="input-box">Example: <strong>CIM_COM_PROD</strong> or <strong>NAIROBI</strong></div>
+        </div>
+      </il>
+      <li class="fields">
+        <div class="field addr-autocomplete">
+          <label for="cc" class="required"><em>*</em>Cost Center</label>
+          <div class="input-box">
+            <input type="text" name="cost_center" id="cc" class="input-text required-entry radar-validate-cost-center" />
+            <div id="cc-choices" class="autocomplete"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div class="input-box">Example: <strong>GVA3050</strong> or <strong>NAI3240</strong></div>
+        </div>
+      </il>
+      <li class="fields">
+        <div class="field addr-autocomplete">
+          <label for="oc" class="required"><em>*</em>Objective code</label>
+          <div class="input-box">
+            <input type="text" name="objective_code" id="oc" class="input-text required-entry radar-validate-objective-code" />
+            <div id="oc-choices" class="autocomplete"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div class="input-box">Example: <strong>RNAIAIGPREACT0</strong></div>
+        </div>
+      </il>
+    </ul>
+  </div>
+  <div class="buttons-set">
+    <p class="required">* Required Fields</p>
+    <p class="back-link"><a href="<?php echo Mage::getUrl('*/*/') ?>"><small>« </small>Back</a></p>
+    <button type="submit" title="Save" class="button"><span><span>Save</span></span></button>
+  </div>
+</form>
+<?php echo Mage::helper('data_icrc/internal')->getRadarValidatorData() ?>
+<script type="text/javascript">
+//<![CDATA[
+  var dataForm = new VarienForm('form-validate', true);
+  function doForceRefreshGivenHelper(helper, element) {
+    helper.changed = false;
+    helper.hasFocus = true;
+    helper.oldElementValue = element.value;
+    helper.getUpdatedChoices();
+  }
+  var billing_unit_autocompleter = new Ajax.Autocompleter("unit", 
+                                                          "unit-choices", 
+                                                          "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                          {minChars: 0});
+  var billing_cc_autocompleter = new Ajax.Autocompleter("cc", 
+                                                        "cc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                        {minChars: 0});
+  var billing_oc_autocompleter = new Ajax.Autocompleter("oc", 
+                                                        "oc-choices", 
+                                                        "<?php echo Mage::getUrl('icrc/radar/internal'); ?>", 
+                                                        {minChars: 0});
+  $('unit').observe('click', function() { doForceRefreshGivenHelper(billing_unit_autocompleter, this); });
+  $('oc').observe('click',   function() { doForceRefreshGivenHelper(billing_oc_autocompleter,   this); });
+  $('cc').observe('click',   function() { doForceRefreshGivenHelper(billing_cc_autocompleter,   this); });
+//]]>
+</script>

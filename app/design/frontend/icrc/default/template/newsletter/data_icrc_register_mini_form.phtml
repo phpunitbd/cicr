@@ -1,0 +1,44 @@
+<?php
+$_logged = $this->helper('customer')->isLoggedIn();
+if (!$_logged) {
+  Mage::getSingleton('customer/session')->setData('newsletter_show_captcha', 1);
+}
+?>
+<?php if(($_logged && !$this->getIsSubscribed()) || !$_logged): ?>
+    <li class="goto-newsletter">
+        <a id="newsletterclick" href="javascript:void(0);"><?php echo $this->__('Newsletter') ?></a>
+        <div class="newsletter" id="newletterlayer">
+            <div id="messages_newsletter_mini"></div>
+            <form action="<?php echo Mage::getUrl('icrc/newsletter/registerajaxPost'); ?>" id="newsletterFormajax" method="post" onsubmit="return false;">
+              <input name="unsuscribe" id="newsletter-mini-unsuscribe" title="<?php echo $this->__('Unsuscribe') ?>" class="hidden" type="hidden" />
+              <input name="back" type="hidden" value="<?php echo Mage::helper('core/url')->getCurrentUrl() ?>" />
+                <ul class="form-list dyn-block">
+                    <?php if(!$this->getIsSubscribed()): ?>
+                        <li class="fields">
+                          <div class="field">
+                            <input name="email" id="newsletter-mini-email" placeholder="<?php echo $this->__('Enter your Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+                          </div>
+                        </li>
+                    <?php endif; ?>
+                    <?php echo $this->getChildHtml('captcha'); ?>
+                    <?php if(!$this->getIsSubscribed()): ?>
+                        <li>
+                          <button onclick="return ICRC.newsletter.register(<?php echo (int)$_logged ?>)">> <?php echo $this->__('Register') ?></button>
+                        </li>
+                    <?php endif; ?>
+                  <?php if (!$_logged): ?>
+                    <li>
+                      <button onclick="return ICRC.newsletter.unregister(<?php echo (int)$_logged ?>)">> <?php echo $this->__('Unregister') ?></button>
+                    </li>
+                  <?php endif; ?>
+                    <input type="hidden" name="logged" value="<?php echo $_logged; ?>" />
+                </ul>
+            </form>
+            <script type="text/javascript">
+            //<![CDATA[
+              var newsletterForm = ICRC.newsletter.init('newsletterFormajax');
+            //]]>
+            </script>
+        </div>
+    </li>
+<?php endif; ?>

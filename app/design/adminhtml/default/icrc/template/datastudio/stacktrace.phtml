@@ -1,0 +1,15 @@
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td><h3><?php echo $this->__('ICRC Datastudio') ?></h3></td>
+            <td class="a-right"><h3><?php echo $this->__('Last project messages') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="entry-edit">
+    <ol>
+    <?php foreach ($this->getMessages() as $message): ?>
+        <li><?php echo $message ?></li>
+    <?php endforeach ?>
+    </ol>
+</div>

@@ -1,0 +1,22 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="page-title title-buttons">
+    <h1>Billing Informations</h1>
+    <button type="button" title="Add New" class="button" onclick="window.location='<?php echo Mage::getUrl('*/*/new') ?>';"><span><span>Add New</span></span></button>
+</div>
+<?php if ($this->getInfoCollection()->getSize() == 0): ?>
+<?php else: ?>
+  <ol class="billing-info addresses-list">
+    <?php foreach ($this->getInfoCollection() as $billing): ?>
+      <li class="item">
+        <div class="buttons">
+          <a class="link-remove" href="<?php echo Mage::getUrl('*/*/delete', array('id' => $billing->getId())) ?>">Delete</a>
+        </div>
+        <address>
+          <strong class="label">Unit Name or Delegation:</strong> <?php echo $billing->getUnit() ?><br/>
+          <strong class="label">Cost Center:</strong> <?php echo $billing->getCostCenter() ?><br/>
+          <strong class="label">Objective code:</strong> <?php echo $billing->getObjectiveCode() ?><br/>
+        </address>
+      </li>
+    <?php endforeach ?>
+  </ol>
+<?php endif ?>

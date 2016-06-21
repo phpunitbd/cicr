@@ -1,0 +1,40 @@
+<?php
+if (!$this->helper('customer')->isLoggedIn())
+  Mage::getSingleton('customer/session')->setData('newsletter_show_captcha', 1);
+?>
+<form action="<?php echo Mage::getUrl('icrc/newsletter/registerPost'); ?>" id="newsletterForm" method="post">
+  <div class="fieldset">
+    <?php if ($this->getShowTitle()): ?>
+      <h2 class="legend"><?php echo $this->__('Newsletter Subscription') ?></h2>
+    <?php endif ?>
+    <ul class="form-list dyn-block">
+      <li class="fields">
+        <div class="field">
+          <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+          <div class="input-box">
+            <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+          </div>
+        </div>
+      </li>
+      <li class="control">
+        <div class="input-box">
+          <div class="input-box">
+            <input name="unsuscribe" id="unsuscribe" title="<?php echo $this->__('Unsuscribe') ?>" class="checkbox" type="checkbox" />
+          </div>
+          <label for="unsuscribe"><?php echo $this->__('Unsuscribe') ?></label>
+        </div>
+      </li>
+      <?php echo $this->getChildHtml('captcha'); ?>
+    </ul>
+  </div>
+  <div class="buttons-set">
+    <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+    <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+  </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+  var newsletterForm = new VarienForm('newsletterForm', true);
+//]]>
+</script>

@@ -1,0 +1,95 @@
+<?php
+$_product = $this->getProduct();
+$data_helper_product = $this->helper('data_icrc/product');
+$ebook = $data_helper_product->isEBook($_product);
+$exhibition = $data_helper_product->isExhibition($_product);
+if ($ebook) {
+  $pdfURL = $this->getUrl('icrc/pdf/view/');
+  $pdfFile = addslashes($_product->getPdf());
+  $productName = $data_helper_product->fullQuoteEscape($_product->getName());
+}
+$buttonTitle = $ebook ? $this->__('Download') : $this->__('Add to Cart');
+$buttonLink = $ebook ? "ICRC.downloadPdf('${pdfURL}', getCurrentlySelectedProductId(), this, '${pdfFile}', '${productName}')" : 'productAddToCartFormAjax(this)';
+if ($_product->isConfigurable()) {
+  $block = $this->getLayout()
+                ->createBlock('data_icrc/configurable')
+                ->setBlockId('configurable_data_' . $_product->getId())
+                ->setProduct($_product)
+                ->setTemplate('catalog/product/list_configurable.phtml');
+}
+if ($_product->isGrouped()) {
+  $block = $this->getLayout()
+                ->createBlock('data_icrc/grouped')
+                ->setBlockId('grouped_data_' . $_product->getId())
+                ->setProduct($_product)
+                ->setTemplate('catalog/product/list_grouped.phtml');
+}
+$_def_qty = $this->getProductDefaultQty() ? $this->getProductDefaultQty() : 1;
+?>
+<div class="add-to-cart dyn-block">
+  <?php if($data_helper_product->isSaleable($_product)): ?>
+    <?php if ($_product->isGrouped()): ?>
+      <?php echo $block->toHtml(); ?>
+    <?php elseif ($ebook): ?>
+      <?php if(!$_product->isGrouped()): ?>
+			  <div class="option-wrapper">
+          <?php if (isset($block)) { echo $block->toHtml(); $buttonLink = $block->getAddToCartAction(); } ?>
+        </div>
+      <?php endif; ?>
+      <div class="addto-cart-button-wrapper product-ebook">
+        <div class="title" onclick="<?php echo $buttonLink ?>"><?php echo $this->__('Download the PDF Version') ?></div>
+        <button type="button" title="<?php echo $buttonTitle ?>" class="addto-cart-button" onclick="<?php echo $buttonLink ?>">
+          <img src="<?php echo $this->getSkinUrl('images/see-pdf.png') ?>" alt="<?php echo $buttonTitle ?>" />
+        </button>
+      </div>
+    <?php elseif ($exhibition): // !ebook ?>
+      <?php $buttonTitle = $this->__('Contact us'); ?>
+      <div class="add-to-cart-price"><?php echo $data_helper_product->getPriceBlockHtml($_product) ?></div>
+      <div class="addto-cart-button-wrapper">
+        <button type="button" title="<?php echo $buttonTitle ?>" class="addto-cart-button" onclick="ICRC.getExhibition('<?php echo Mage::getUrl('icrc/exhibition/get', array('id' => $_product->getId())) ?>')">
+          <img src="<?php echo $this->getSkinUrl(Mage::getStoreConfig('icrc/web/contact_us_image')) ?>" alt="<?php echo $buttonTitle ?>" />
+        </button>
+      </div>
+    <?php else: // !ebook ?>
+      <div class="add-to-cart-price"><?php echo $data_helper_product->getPriceBlockHtml($_product) ?></div>
+      <?php if(!$_product->isGrouped()): ?>
+      <?php
+        if ($_product->getTypeId() == "simple") {
+          $addToCartUrl = $this->helper('checkout/cart')->getAddUrl($_product, array());
+          $_pid = $_product->getId();
+          echo "<form id=\"product_addtocart_simple_form_$_pid\" method=\"post\" action=\"$addToCartUrl\">";
+          $buttonLink = "addSimpleToCartJs('$addToCartUrl', 'product_addtocart_simple_form_${_pid}', 'qty_${_pid}', this)";
+        }
+      ?>
+		    <?php if($_product->isConfigurable()): ?>
+			    <div class="qty-option-wrapper">
+		    <?php else:?>
+			    <div class="qty-wrapper">
+        <?php endif; ?>
+        <label for="qty_<?php echo $_product->getId() ?>"><?php echo $this->__('Qty:') ?></label>
+        <input type="text" name="qty" id="qty_<?php echo $_product->getId() ?>" maxlength="12" value="<?php echo (int)$_def_qty ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />
+            <?php if (isset($block)) { echo $block->toHtml(); $buttonLink = $block->getAddToCartAction(); } ?>
+        </div>
+      <?php endif; // ~isGrouped ?>
+      <div class="addto-cart-button-wrapper">
+        <button type="button" title="<?php echo $buttonTitle ?>" class="addto-cart-button" onclick="<?php echo $buttonLink ?>">
+          <img src="<?php echo $this->getSkinUrl(Mage::getStoreConfig('icrc/web/add_to_cart_image')) ?>" alt="<?php echo $buttonTitle ?>" />
+        </button>
+        <div class="please-wait" id="cart-wait-<?php echo $_product->getId() ?>" style="display:none;">
+          <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Adding to cart...') ?>" title="<?php echo $this->__('Adding to cart...') ?>" class="v-middle" /> <?php echo $this->__('Adding to cart...') ?>
+        </div>
+      </div>
+      <?php if (!$ebook && $_product->getTypeId()=="simple") : ?>
+      </form>
+      <?php endif;?>
+    
+    <?php endif; // ~ebook ?>
+
+  <?php else: // !isSaleable ?>
+    <div class="add-to-cart-price"><?php echo $data_helper_product->getPriceBlockHtml($_product) ?></div>
+    <?php if (Mage::registry('non_saleable_message')): ?>
+      <div class="note-msg"><?php echo Mage::registry('non_saleable_message') ?></div>
+    <?php endif ?>
+  <?php endif; // ~isSaleable ?>
+</div>
+

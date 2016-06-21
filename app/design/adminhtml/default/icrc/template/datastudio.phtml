@@ -1,0 +1,310 @@
+<?php
+$first = null;
+?>
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td><h3><?php echo $this->__('ICRC Datastudio') ?></h3></td>
+            <td class="a-right">
+                <button onclick="doRun()" class="scalable save" type="button"><span>Run project</span></button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="entry-edit">
+    <form id="run_form" name="run_form" method="post" action="<?=$this->getUrl('*/*/run')?>">
+        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+        <input type="hidden" id="option-count-check" value="" />
+        <h4 class="icon-head head-edit-form fieldset-legend"><?=$this->__('Run project')?></h4>
+        <fieldset id="my-fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><?=$this->__('Project to run')?> <span class="required">*</span></td>
+                    <td class="input-ele">
+                        <select class="required-select validate-select" name="run[projname]" id="project-selector">
+                            <?php foreach ($this->getProjects() as $project): ?>
+                            <?php if (strncmp($project->code, 'RPT_', 4) != 0 && strncmp($project->code, 'EXP_', 4) != 0) continue; ?>
+                            <?php if (!$first) $first = $project->code; ?>
+                            <option value="<?php echo $project->code ?>"><?php echo empty($project->label) ? $project->code : $project->label ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+          <div class="entity-edit">
+            <div class="entry-edit-head">
+              <h4 class="icon-head head-edit-form fieldset-legend">Parameters</h4>
+            </div>
+            <div class="box">
+              <div class="hor-scroll">
+                <table class="dynamic-grid" cellspacing="0" id="parameters-table">
+                  <tr id="parameters-table-row">
+                    <th>Name</th>
+                    <th>Value</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var runForm = new varienForm('run_form');
+
+// IE removes quotes from element.innerHTML whenever it thinks they're not needed, which breaks html.
+var templateText =
+    '<tr class="param-row" id="row_{{id}}">'+
+        '<td><input name="param[{{id}}][name]" readonly="readonly" value="{{name}}" class="input-text input-readonly larger-input-text" type="text" /><\/td>'+
+        '<td style="width: 100%"><input name="param[{{id}}][value]" value="{{value}}" class="{{inputtype}} {{reqopt}} {{validclass}} larger-input-text" type="{{type}}" id="prm_val_{{id}}" />{{reqmark}}{{helper}}<\/td>'+
+    '<\/tr>';
+var templateTextBound =
+    '<tr class="param-row" id="row_{{id}}">'+
+        '<td><input name="param[{{id}}][name]" readonly="readonly" value="{{name}}" class="input-text input-readonly larger-input-text" type="text" /><\/td>'+
+        '<td style="width: 100%"><select name="param[{{id}}][value]" class="{{reqopt}} {{validclass}}" id="prm_val_{{id}}">{{valueshtml}}</select>{{reqmark}}<\/td>'+
+    '<\/tr>';
+var templateDatePicker = ' <img title="Select date" id="cal_date_trig_{{id}}" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN) . 'adminhtml/default/default/images/grid-cal.gif'; ?>"  class="v-middle"\/>';
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+var parametersInfo = {
+    table : $('parameters-table'),
+    templateDatePicker : templateDatePicker,
+    templateSyntax : /(^|.|\r|\n)({{(\w+)}})/,
+    templateText : templateText,
+    templateTextBound : templateTextBound,
+    itemCount : 0,
+    totalItems : 0,
+    totalId: 0,
+    isReadOnly: 0,
+    add : function(data) {
+        this.template = new Template(this.templateText, this.templateSyntax);
+        var isNewOption = false;
+        if(!data.id){
+            data = {};
+            data.id  = 'option_'+this.itemCount;
+            isNewOption = true;
+        }
+        if (!data.type) data.type = 'text';
+        if (!data.inputtype) data.inputtype = 'input-text';
+        if (data.required) {
+          data.reqopt = 'required-option';
+          data.reqmark = ' <span class="required">*</span>';
+        }
+        if (data.dstype == 'Integer' || data.dstype == 'Float' || data.dstype == 'Numeric' || data.dstype == 'Currency') {
+          data.validclass = 'validate-number';
+        }
+        if (data.dstype == 'Date') {
+          data.validclass = 'validate-date-au';
+          data.helper = new Template(this.templateDatePicker, this.templateSyntax).evaluate(data);
+        }
+        var elementText = this.template.evaluate(data);
+        Element.insert(this.table, {bottom: elementText});
+        if (isNewOption && !this.isReadOnly) {
+            this.enableNewOptionDeleteButton(data.id);
+        }
+        this.bindRemoveButtons();
+        this.itemCount++;
+        this.totalItems++;
+        this.updateItemsCountField();
+        if (data.dstype == 'Date') { // init datepicker
+            Calendar.setup({
+                inputField : 'prm_val_' + data.id,
+                ifFormat : '%d/%m/%Y',
+                button : 'cal_date_trig_' + data.id,
+                align : 'Bl',
+                singleClick : true,
+                showsTime : false
+            });
+        }
+    },
+    addBound : function(data) {
+        this.template = new Template(this.templateTextBound, this.templateSyntax);
+        var isNewOption = false;
+        if(!data.id){
+            data = {};
+            data.id  = 'option_'+this.itemCount;
+            isNewOption = true;
+        }
+        if (data.required) {
+          data.reqopt = 'required-option';
+          data.reqmark = ' <span class="required">*</span>';
+        }
+        data.valueshtml = '<option></option>';
+        for (var i = 0; i < data.values.length; ++i) {
+          data.valueshtml += '<option>' + data.values[i] + '</option>';
+        }
+        var elementText = this.template.evaluate(data);
+        Element.insert(this.table, {bottom: elementText});
+        if (isNewOption && !this.isReadOnly) {
+            this.enableNewOptionDeleteButton(data.id);
+        }
+        this.bindRemoveButtons();
+        this.itemCount++;
+        this.totalItems++;
+        this.updateItemsCountField();
+        if (data.dstype == 'Date') { // init datepicker
+            Calendar.setup({
+                inputField : 'prm_val_' + data.id,
+                ifFormat : '%d/%m/%Y',
+                button : 'cal_date_trig_' + data.id,
+                align : 'Bl',
+                singleClick : true,
+                showsTime : false
+            });
+        }
+    },
+    remove : function(event){
+        var element = $(Event.findElement(event, 'tr')); // !!! Button already
+                                                               // have table parent in safari
+        // Safari workaround
+        element.ancestors().each(function(parentItem){
+           if (parentItem.hasClassName('option-row')) {
+               element = parentItem;
+               throw $break;
+           } else if (parentItem.hasClassName('box')) {
+               throw $break;
+           }
+        });
+
+
+        if(element){
+            this._removeElement(element);
+        }
+    },
+    _removeElement: function(element) {
+        var elementFlags = element.getElementsByClassName('delete-flag');
+        if(elementFlags[0]){
+            elementFlags[0].value=1;
+        }
+
+        element.addClassName('no-display');
+        element.addClassName('template');
+        element.hide();
+        this.totalItems--;
+        this.updateItemsCountField();
+    },
+    updateItemsCountField: function() {
+        if (this.totalItems > 0) {
+            $('option-count-check').value = '1';
+        } else {
+            $('option-count-check').value = '';
+        }
+    },
+    enableNewOptionDeleteButton: function(id) {
+        $$('#delete_button_container_' + id + ' button').each(function(button) {
+            button.enable();
+            button.removeClassName('disabled');
+        });
+    },
+    bindRemoveButtons : function(){
+        var buttons = $$('.delete-option');
+        for(var i=0;i<buttons.length;i++){
+            if(!$(buttons[i]).binded){
+                $(buttons[i]).binded = true;
+                Event.observe(buttons[i], 'click', this.remove.bind(this));
+            }
+        }
+    },
+    removeAll : function() {
+      var me = this;
+      $$('tr.param-row').each(function (e) {
+          me._removeElement(e);
+      });
+    },
+    getParams : function(event) {
+      this.removeAll();
+      var el = event.element();
+      var projectCode = event.element().value;
+      if (projectCode == '' || projectCode == 'Please select an option.')
+        return false;
+      var me = this;
+      var request = new Ajax.Request(
+          '<?php echo $this->getUrl("*/*/getParamJson") ?>',
+          {
+              method: 'post',
+              onComplete: function(transport){
+                if (!transport.responseJSON) {
+                  alert('incorrect response');
+                  return false;
+                }
+                if (transport.responseJSON.status == 'OK') {
+                  for (i = 0; i < transport.responseJSON.params.length; ++i) {
+                    try {
+		      var k = me.totalId++; // You must not reuse an existed id
+                      if (transport.responseJSON.params[i].bound)
+                        me.addBound({ id: 'prm_' + k, 
+                                      name: transport.responseJSON.params[i].name.code,
+                                      value: transport.responseJSON.params[i].value,
+                                      dstype: transport.responseJSON.params[i].type,
+                                      values: transport.responseJSON.params[i].values });
+                      else
+                        me.add({ id: 'prm_' + k, 
+                                 name: transport.responseJSON.params[i].name.code,
+                                 value: transport.responseJSON.params[i].value,
+                                 dstype: transport.responseJSON.params[i].type });
+                    } catch (e) {
+alert(e);
+                    }
+                  }
+                }
+                else {
+                  alert('Error: ' + transport.responseJSON.error);
+                }
+              },
+              parameters: new Hash({project: projectCode})    // Seriallizing the form input values
+          }
+      );
+    }
+
+}
+if($('row-template')){
+    $('row-template').remove();
+}
+
+function doRun() {
+  if (runForm.validate())
+    runForm.submit()
+}
+
+Validation.addAllThese([
+    ['required-option', 'Failed', function(v) {
+        return !Validation.get('IsEmpty').test(v);
+}]]);
+
+if ($('project-selector')) {
+  $('project-selector').observe('change', parametersInfo.getParams.bind(parametersInfo));
+}
+
+<?php if ($first):
+  try {
+    $ret = Mage::helper('data_icrc/datastudio')->getProjectParameters($first);
+    $params = $ret->params;
+  } catch (Exception $e) {
+    $params = array();
+  }
+?>
+var i = 0;
+<?php foreach($params as $p): ?>
+  parametersInfo.add({ id: 'default_prj' + i++, 
+                       name: '<?php echo $p->name->code ?>',
+                       value: '<?php echo $p->value ?>',
+                       dstype: '<?php echo $p->type ?>' })
+<?php endforeach ?>
+<?php endif ?>
+
+//]]>
+</script>
+
+
+<div class="debug-test">
+  <a href="<?php echo $this->getUrl('*/*/stacktrace') ?>">last stacktrace</a>
+</div>
+
+
+<?php //Zend_Debug::dump($params);
